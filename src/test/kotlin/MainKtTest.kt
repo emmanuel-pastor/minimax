@@ -52,7 +52,7 @@ class MainKtTest {
             val initialState = arrayOf(
                 arrayOf("X", "X", "O"),
                 arrayOf("O", "O", "X"),
-                arrayOf("X", "O", "X")
+                arrayOf("X", "O", "O")
             )
 
             assertThrows(IllegalArgumentException::class.java) {
@@ -81,7 +81,7 @@ class MainKtTest {
             val initialState = arrayOf(
                 arrayOf("X", "X", "O"),
                 arrayOf("O", "O", "X"),
-                arrayOf("X", "O", "X")
+                arrayOf("X", "O", "O")
             )
 
             val isTerminal = isTerminal(initialState)
@@ -255,6 +255,61 @@ class MainKtTest {
                 arrayOf("O", "X", "")
             )
             assert(nextState.contentDeepEquals(expectedState))
+        }
+    }
+
+    @Nested
+    inner class ValueOfTests {
+        @Test
+        fun `throws an error when given a non terminal state`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+
+            assertThrows(IllegalArgumentException::class.java) {
+                valueOf(initialState)
+            }
+        }
+
+        @Test
+        fun `return 1 when Max won`() {
+            val initialState = arrayOf(
+                arrayOf("O", "", "X"),
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", "")
+            )
+
+            val value = valueOf(initialState)
+
+            assertEquals(value, 1)
+        }
+
+        @Test
+        fun `return -1 when Min won`() {
+            val initialState = arrayOf(
+                arrayOf("", "", "O"),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+
+            val value = valueOf(initialState)
+
+            assertEquals(value, -1)
+        }
+
+        @Test
+        fun `return 0 when it ended in a draw`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "O"),
+                arrayOf("O", "O", "X"),
+                arrayOf("X", "O", "O")
+            )
+
+            val value = valueOf(initialState)
+
+            assertEquals(value, 0)
         }
     }
 }
