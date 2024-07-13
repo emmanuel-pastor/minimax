@@ -63,6 +63,19 @@ fun isTerminal(state: State): Boolean {
     return turnsPlayed > 8
 }
 
+fun possibleActions(state: State): Array<Coords> {
+    val actions = mutableListOf<Coords>()
+    state.forEachIndexed { x, line ->
+        line.forEachIndexed { y, cell ->
+            if (cell.isBlank()) {
+                actions.add(x to y)
+            }
+        }
+    }
+
+    return actions.toTypedArray()
+}
+
 /*
     X will be the MAX player
     O is the starting player (playing on odd turns, first turn being 1)
