@@ -11,8 +11,8 @@ sealed class Player(val symbol: String) {
 }
 
 fun nextPlayer(state: State): Player {
-    val turnsPlayed = state.sumOf { line ->
-        line.count { cell ->
+    val turnsPlayed = state.sumOf { row ->
+        row.count { cell ->
             cell.isNotBlank()
         }
     }
@@ -30,9 +30,9 @@ fun nextPlayer(state: State): Player {
 
 fun isTerminal(state: State): Boolean {
     val terminalStates = arrayOf(
-        arrayOf(0 to 0, 0 to 1, 0 to 2), //first line
-        arrayOf(1 to 0, 1 to 1, 1 to 2), //second line
-        arrayOf(2 to 0, 2 to 1, 2 to 2), //third line
+        arrayOf(0 to 0, 0 to 1, 0 to 2), //first row
+        arrayOf(1 to 0, 1 to 1, 1 to 2), //second row
+        arrayOf(2 to 0, 2 to 1, 2 to 2), //third row
         arrayOf(0 to 0, 1 to 0, 2 to 0), //first column
         arrayOf(0 to 1, 1 to 1, 2 to 1), //second column
         arrayOf(0 to 2, 1 to 2, 2 to 2), //third column
@@ -43,10 +43,10 @@ fun isTerminal(state: State): Boolean {
     terminalStates.forEach { terminalState ->
         var minCounter = 0
         var maxCounter = 0
-        terminalState.forEach { (line, column) ->
-            if (state[line][column] == Player.Min.symbol) {
+        terminalState.forEach { (row, column) ->
+            if (state[row][column] == Player.Min.symbol) {
                 minCounter++
-            } else if (state[line][column] == Player.Max.symbol) {
+            } else if (state[row][column] == Player.Max.symbol) {
                 maxCounter++
             }
         }
@@ -54,8 +54,8 @@ fun isTerminal(state: State): Boolean {
         if (max(minCounter, maxCounter) == 3) return true
     }
 
-    val turnsPlayed = state.sumOf { line ->
-        line.count { cell ->
+    val turnsPlayed = state.sumOf { row ->
+        row.count { cell ->
             cell.isNotBlank()
         }
     }
@@ -65,8 +65,8 @@ fun isTerminal(state: State): Boolean {
 
 fun possibleActions(state: State): Array<Coords> {
     val actions = mutableListOf<Coords>()
-    state.forEachIndexed { x, line ->
-        line.forEachIndexed { y, cell ->
+    state.forEachIndexed { x, row ->
+        row.forEachIndexed { y, cell ->
             if (cell.isBlank()) {
                 actions.add(x to y)
             }
