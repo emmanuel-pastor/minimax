@@ -312,4 +312,72 @@ class MainKtTest {
             assertEquals(value, 0)
         }
     }
+
+    @Nested
+    inner class MinimaxTests {
+        @Test
+        fun `return -1 when Min will win`() {
+            val initialState = arrayOf(
+                arrayOf("X", "", ""),
+                arrayOf("O", "O", ""),
+                arrayOf("X", "O", "")
+            )
+
+            val value = minimax(initialState)
+
+            assertEquals(-1, value)
+        }
+
+        @Test
+        fun `return 1 when Max will win`() {
+            val initialState = arrayOf(
+                arrayOf("O", "", ""),
+                arrayOf("X", "X", ""),
+                arrayOf("O", "X", "")
+            )
+
+            val value = minimax(initialState)
+
+            assertEquals(1, value)
+        }
+
+        @Test
+        fun `return 0 when only a draw is possible`() {
+            val initialState = arrayOf(
+                arrayOf("O", "O", "X"),
+                arrayOf("X", "", ""),
+                arrayOf("O", "X", "O")
+            )
+
+            val value = minimax(initialState)
+
+            assertEquals(0, value)
+        }
+
+        @Test
+        fun `return 0 when given an empty grid state`() {
+            val initialState = arrayOf(
+                arrayOf("", "", ""),
+                arrayOf("", "", ""),
+                arrayOf("", "", "")
+            )
+
+            val value = minimax(initialState)
+
+            assertEquals(0, value)
+        }
+
+        @Test
+        fun `return 1 when given a grid state where Max won`() {
+            val initialState = arrayOf(
+                arrayOf("O", "", "X"),
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", "")
+            )
+
+            val value = minimax(initialState)
+
+            assertEquals(1, value)
+        }
+    }
 }

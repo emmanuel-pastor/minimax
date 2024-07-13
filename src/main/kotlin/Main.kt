@@ -1,6 +1,7 @@
 package com.emmanuel.pastor.simplesmartapps
 
 import kotlin.math.max
+import kotlin.math.min
 
 typealias State = Array<Array<String>>
 typealias Coords = Pair<Int, Int>
@@ -85,7 +86,11 @@ fun nextState(state: State, action: Coords, player: Player): State {
         "Cannot perform this action. The cell ($row, $column) is not empty."
     }
 
-    return state.clone().also { it[row][column] = player.symbol }
+    return Array(state.size) { x ->
+        Array(state[x].size) { y ->
+            state[x][y]
+        }
+    }.also { it[row][column] = player.symbol }
 }
 
 fun valueOf(state: State): Int {
@@ -116,10 +121,29 @@ fun valueOf(state: State): Int {
 /*
     X will be the MAX player
     O is the starting player (playing on odd turns, first turn being 1)
-    @return the coordinates of the next player's most optimal action
+    @return the best reachable value from the given state
  */
-fun minimax(state: State): Coords {
-    return 1 to 2
+fun minimax(state: State): Int {
+    if (isTerminal(state)) return valueOf(state)
+
+    val possibleActions = possibleActions(state)
+    return when (nextPlayer(state)) {
+        Player.Max -> {
+            var value = Int.MIN_VALUE
+            possibleActions.forEach { action ->
+                value = max(value, minimax(nextState(state, action, Player.Max)))
+            }
+            value
+        }
+
+        Player.Min -> {
+            var value = Int.MAX_VALUE
+            possibleActions.forEach { action ->
+                value = min(value, minimax(nextState(state, action, Player.Min)))
+            }
+            value
+        }
+    }
 }
 
 fun main() {
