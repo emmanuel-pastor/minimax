@@ -76,6 +76,18 @@ fun possibleActions(state: State): Array<Coords> {
     return actions.toTypedArray()
 }
 
+fun nextState(state: State, action: Coords, player: Player): State {
+    val (row, column) = action
+    require(row in 0..2 && column in 0.. 2) {
+        "Coordinates ($row, $column) are out of the grid"
+    }
+    require(state[row][column].isBlank()) {
+        "Cannot perform this action. The cell ($row, $column) is not empty."
+    }
+
+    return state.clone().also { it[row][column] =  player.symbol}
+}
+
 /*
     X will be the MAX player
     O is the starting player (playing on odd turns, first turn being 1)

@@ -1,7 +1,4 @@
-import com.emmanuel.pastor.simplesmartapps.Player
-import com.emmanuel.pastor.simplesmartapps.isTerminal
-import com.emmanuel.pastor.simplesmartapps.nextPlayer
-import com.emmanuel.pastor.simplesmartapps.possibleActions
+import com.emmanuel.pastor.simplesmartapps.*
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -191,6 +188,73 @@ class MainKtTest {
 
             val expectedActions = arrayOf(0 to 2, 1 to 1)
             assert(actions.contentDeepEquals(expectedActions))
+        }
+    }
+
+    @Nested
+    inner class NextStateTests {
+        @Test
+        fun `throws an exception when given coordinates out of the grid`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+
+            assertThrows(IllegalArgumentException::class.java) {
+                nextState(initialState, (-1 to 3), Player.Min)
+            }
+        }
+
+        @Test
+        fun `throws an exception when given coordinates for an non empty cell`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+
+            assertThrows(IllegalArgumentException::class.java) {
+                nextState(initialState, (0 to 0), Player.Min)
+            }
+        }
+
+        @Test
+        fun `return the right state given a normal initial state and action and playing with Min`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+
+
+            val nextState = nextState(initialState, (0 to 2), Player.Min)
+
+            val expectedState = arrayOf(
+                arrayOf("O", "X", "O"),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+            assert(nextState.contentDeepEquals(expectedState))
+        }
+
+        @Test
+        fun `return the right state given a normal initial state and action and playing with Max`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "", "")
+            )
+
+
+            val nextState = nextState(initialState, (2 to 1), Player.Max)
+
+            val expectedState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "X", "")
+            )
+            assert(nextState.contentDeepEquals(expectedState))
         }
     }
 }
