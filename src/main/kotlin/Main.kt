@@ -1,5 +1,7 @@
 package com.emmanuel.pastor.simplesmartapps
 
+import kotlin.math.max
+
 typealias State = Array<Array<String>>
 typealias Coords = Pair<Int, Int>
 
@@ -24,6 +26,41 @@ fun nextPlayer(state: State): Player {
     } else {
         Player.Max
     }
+}
+
+fun isTerminal(state: State): Boolean {
+    val terminalStates = arrayOf(
+        arrayOf(0 to 0, 0 to 1, 0 to 2), //first line
+        arrayOf(1 to 0, 1 to 1, 1 to 2), //second line
+        arrayOf(2 to 0, 2 to 1, 2 to 2), //third line
+        arrayOf(0 to 0, 1 to 0, 2 to 0), //first column
+        arrayOf(0 to 1, 1 to 1, 2 to 1), //second column
+        arrayOf(0 to 2, 1 to 2, 2 to 2), //third column
+        arrayOf(0 to 0, 1 to 1, 2 to 2), //diagonal top-left to bottom-right
+        arrayOf(0 to 2, 1 to 1, 2 to 0) //diagonal top-right to bottom-left
+    )
+
+    terminalStates.forEach { terminalState ->
+        var minCounter = 0
+        var maxCounter = 0
+        terminalState.forEach { (line, column) ->
+            if (state[line][column] == Player.Min.symbol) {
+                minCounter++
+            } else if (state[line][column] == Player.Max.symbol) {
+                maxCounter++
+            }
+        }
+
+        if (max(minCounter, maxCounter) == 3) return true
+    }
+
+    val turnsPlayed = state.sumOf { line ->
+        line.count { cell ->
+            cell.isNotBlank()
+        }
+    }
+
+    return turnsPlayed > 8
 }
 
 /*

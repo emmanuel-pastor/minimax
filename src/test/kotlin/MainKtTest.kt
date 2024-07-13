@@ -1,4 +1,5 @@
 import com.emmanuel.pastor.simplesmartapps.Player
+import com.emmanuel.pastor.simplesmartapps.isTerminal
 import com.emmanuel.pastor.simplesmartapps.nextPlayer
 import org.junit.jupiter.api.Test
 
@@ -59,6 +60,74 @@ class MainKtTest {
             assertThrows(IllegalArgumentException::class.java) {
                 nextPlayer(initialState)
             }
+        }
+    }
+
+    @Nested
+    inner class IsTerminalTests {
+        @Test
+        fun `return false given empty grid state`() {
+            val initialState = arrayOf(
+                arrayOf("", "", ""),
+                arrayOf("", "", ""),
+                arrayOf("", "", "")
+            )
+
+            val isTerminal = isTerminal(initialState)
+
+            assertEquals(isTerminal, false)
+        }
+
+        @Test
+        fun `return true given full grid state with a draw`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "O"),
+                arrayOf("O", "O", "X"),
+                arrayOf("X", "O", "X")
+            )
+
+            val isTerminal = isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
+        }
+
+        @Test
+        fun `return true given Min won with a diagonal`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "O"),
+                arrayOf("O", "O", "X"),
+                arrayOf("O", "X", "X")
+            )
+
+            val isTerminal = isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
+        }
+
+        @Test
+        fun `return true given Max won with a line before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "X"),
+                arrayOf("O", "O", "X"),
+                arrayOf("O", "", "")
+            )
+
+            val isTerminal = isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
+        }
+
+        @Test
+        fun `return true given Max won with a Column`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "O"),
+                arrayOf("O", "X", "X"),
+                arrayOf("O", "X", "O")
+            )
+
+            val isTerminal = isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
         }
     }
 }
