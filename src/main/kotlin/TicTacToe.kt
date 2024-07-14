@@ -1,17 +1,11 @@
 package com.emmanuel.pastor.simplesmartapps
 
 import kotlin.math.max
-import kotlin.math.min
 
 typealias State = Array<Array<String>>
-typealias Coords = Pair<Int, Int>
+typealias Action = Pair<Int, Int>
 
-sealed class Player(val symbol: String) {
-    data object Max : Player("X")
-    data object Min : Player("O")
-}
-
-object Minimax {
+class TicTacToeRules : GameRules<State, Action> {
     private val terminalStates = arrayOf(
         arrayOf(0 to 0, 0 to 1, 0 to 2), //first row
         arrayOf(1 to 0, 1 to 1, 1 to 2), //second row
@@ -23,7 +17,7 @@ object Minimax {
         arrayOf(0 to 2, 1 to 1, 2 to 0) //diagonal top-right to bottom-left
     )
 
-    fun nextPlayer(state: State): Player {
+    override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell ->
                 cell.isNotBlank()
@@ -41,7 +35,7 @@ object Minimax {
         }
     }
 
-    fun isTerminal(state: State): Boolean {
+    override fun isTerminal(state: State): Boolean {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -65,8 +59,8 @@ object Minimax {
         return turnsPlayed > 8
     }
 
-    fun possibleActions(state: State): Array<Coords> {
-        val actions = mutableListOf<Coords>()
+    override fun possibleActions(state: State): Array<Action> {
+        val actions = mutableListOf<Action>()
         state.forEachIndexed { x, row ->
             row.forEachIndexed { y, cell ->
                 if (cell.isBlank()) {
@@ -78,7 +72,7 @@ object Minimax {
         return actions.toTypedArray()
     }
 
-    fun nextState(state: State, action: Coords, player: Player): State {
+    override fun nextState(state: State, action: Action): State {
         val (row, column) = action
         require(row in 0..2 && column in 0..2) {
             "Coordinates ($row, $column) are out of the grid"
@@ -91,10 +85,10 @@ object Minimax {
             Array(state[x].size) { y ->
                 state[x][y]
             }
-        }.also { it[row][column] = player.symbol }
+        }.also { it[row][column] = nextPlayer(state).symbol }
     }
 
-    fun valueOf(state: State): Int {
+    override fun valueOf(state: State): Int {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -119,31 +113,10 @@ object Minimax {
         return if (turnsPlayed == 9) 0 else throw IllegalArgumentException("Cannot determine the value of a non terminal state.")
     }
 
-    /*
-        X will be the MAX player
-        O is the starting player (playing on odd turns, first turn being 1)
-        @return the best reachable value from the given state
-     */
-    fun minimax(state: State): Int {
-        if (isTerminal(state)) return valueOf(state)
-
-        val possibleActions = possibleActions(state)
-        return when (nextPlayer(state)) {
-            Player.Max -> {
-                var value = Int.MIN_VALUE
-                possibleActions.forEach { action ->
-                    value = max(value, minimax(nextState(state, action, Player.Max)))
-                }
-                value
-            }
-
-            Player.Min -> {
-                var value = Int.MAX_VALUE
-                possibleActions.forEach { action ->
-                    value = min(value, minimax(nextState(state, action, Player.Min)))
-                }
-                value
-            }
+    override fun printState(state: State) {
+        state.forEach { line ->
+            println(line.contentToString())
         }
+        println()
     }
 }

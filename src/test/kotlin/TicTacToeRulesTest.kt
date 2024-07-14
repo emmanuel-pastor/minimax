@@ -1,16 +1,14 @@
-import com.emmanuel.pastor.simplesmartapps.*
-import com.emmanuel.pastor.simplesmartapps.Minimax.isTerminal
-import com.emmanuel.pastor.simplesmartapps.Minimax.minimax
-import com.emmanuel.pastor.simplesmartapps.Minimax.nextPlayer
-import com.emmanuel.pastor.simplesmartapps.Minimax.nextState
-import com.emmanuel.pastor.simplesmartapps.Minimax.possibleActions
-import com.emmanuel.pastor.simplesmartapps.Minimax.valueOf
+import com.emmanuel.pastor.simplesmartapps.Player
+import com.emmanuel.pastor.simplesmartapps.TicTacToeRules
+import com.emmanuel.pastor.simplesmartapps.minimax
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Nested
+class TicTacToeRulesTest {
 
-class MainKtTest {
+    val rules = TicTacToeRules()
 
     @Nested
     inner class NextPlayerTests {
@@ -22,7 +20,7 @@ class MainKtTest {
                 arrayOf("X", "O", "")
             )
 
-            val nextPlayer = nextPlayer(initialState)
+            val nextPlayer = rules.nextPlayer(initialState)
 
             assertEquals(nextPlayer, Player.Min)
         }
@@ -35,7 +33,7 @@ class MainKtTest {
                 arrayOf("O", "", "")
             )
 
-            val nexPlayer = nextPlayer(initialState)
+            val nexPlayer = rules.nextPlayer(initialState)
 
             assertEquals(nexPlayer, Player.Max)
         }
@@ -48,7 +46,7 @@ class MainKtTest {
                 arrayOf("", "", "")
             )
 
-            val nexPlayer = nextPlayer(initialState)
+            val nexPlayer = rules.nextPlayer(initialState)
 
             assertEquals(nexPlayer, Player.Min)
         }
@@ -62,7 +60,7 @@ class MainKtTest {
             )
 
             assertThrows(IllegalArgumentException::class.java) {
-                nextPlayer(initialState)
+                rules.nextPlayer(initialState)
             }
         }
     }
@@ -77,7 +75,7 @@ class MainKtTest {
                 arrayOf("", "", "")
             )
 
-            val isTerminal = isTerminal(initialState)
+            val isTerminal = rules.isTerminal(initialState)
 
             assertEquals(isTerminal, false)
         }
@@ -90,7 +88,7 @@ class MainKtTest {
                 arrayOf("X", "O", "O")
             )
 
-            val isTerminal = isTerminal(initialState)
+            val isTerminal = rules.isTerminal(initialState)
 
             assertEquals(isTerminal, true)
         }
@@ -103,7 +101,7 @@ class MainKtTest {
                 arrayOf("O", "X", "X")
             )
 
-            val isTerminal = isTerminal(initialState)
+            val isTerminal = rules.isTerminal(initialState)
 
             assertEquals(isTerminal, true)
         }
@@ -116,7 +114,7 @@ class MainKtTest {
                 arrayOf("O", "", "")
             )
 
-            val isTerminal = isTerminal(initialState)
+            val isTerminal = rules.isTerminal(initialState)
 
             assertEquals(isTerminal, true)
         }
@@ -129,7 +127,7 @@ class MainKtTest {
                 arrayOf("O", "X", "O")
             )
 
-            val isTerminal = isTerminal(initialState)
+            val isTerminal = rules.isTerminal(initialState)
 
             assertEquals(isTerminal, true)
         }
@@ -145,7 +143,7 @@ class MainKtTest {
                 arrayOf("O", "X", "O")
             )
 
-            val actions = possibleActions(initialState)
+            val actions = rules.possibleActions(initialState)
 
             assert(actions.isEmpty())
         }
@@ -158,7 +156,7 @@ class MainKtTest {
                 arrayOf("", "", "")
             )
 
-            val actions = possibleActions(initialState)
+            val actions = rules.possibleActions(initialState)
 
             val expectedActions = arrayOf(
                 0 to 0, 0 to 1, 0 to 2,
@@ -176,7 +174,7 @@ class MainKtTest {
                 arrayOf("O", "X", "O")
             )
 
-            val actions = possibleActions(initialState)
+            val actions = rules.possibleActions(initialState)
 
             val expectedActions = arrayOf(0 to 0)
             assert(actions.contentDeepEquals(expectedActions))
@@ -190,7 +188,7 @@ class MainKtTest {
                 arrayOf("O", "X", "O")
             )
 
-            val actions = possibleActions(initialState)
+            val actions = rules.possibleActions(initialState)
 
             val expectedActions = arrayOf(0 to 2, 1 to 1)
             assert(actions.contentDeepEquals(expectedActions))
@@ -208,7 +206,7 @@ class MainKtTest {
             )
 
             assertThrows(IllegalArgumentException::class.java) {
-                nextState(initialState, (-1 to 3), Player.Min)
+                rules.nextState(initialState, (-1 to 3))
             }
         }
 
@@ -221,7 +219,7 @@ class MainKtTest {
             )
 
             assertThrows(IllegalArgumentException::class.java) {
-                nextState(initialState, (0 to 0), Player.Min)
+                rules.nextState(initialState, (0 to 0))
             }
         }
 
@@ -234,7 +232,7 @@ class MainKtTest {
             )
 
 
-            val nextState = nextState(initialState, (0 to 2), Player.Min)
+            val nextState = rules.nextState(initialState, (0 to 2))
 
             val expectedState = arrayOf(
                 arrayOf("O", "X", "O"),
@@ -253,7 +251,7 @@ class MainKtTest {
             )
 
 
-            val nextState = nextState(initialState, (2 to 1), Player.Max)
+            val nextState = rules.nextState(initialState, (2 to 1))
 
             val expectedState = arrayOf(
                 arrayOf("O", "X", ""),
@@ -275,7 +273,7 @@ class MainKtTest {
             )
 
             assertThrows(IllegalArgumentException::class.java) {
-                valueOf(initialState)
+                rules.valueOf(initialState)
             }
         }
 
@@ -287,7 +285,7 @@ class MainKtTest {
                 arrayOf("X", "O", "")
             )
 
-            val value = valueOf(initialState)
+            val value = rules.valueOf(initialState)
 
             assertEquals(value, 1)
         }
@@ -300,7 +298,7 @@ class MainKtTest {
                 arrayOf("O", "X", "")
             )
 
-            val value = valueOf(initialState)
+            val value = rules.valueOf(initialState)
 
             assertEquals(value, -1)
         }
@@ -313,7 +311,7 @@ class MainKtTest {
                 arrayOf("X", "O", "O")
             )
 
-            val value = valueOf(initialState)
+            val value = rules.valueOf(initialState)
 
             assertEquals(value, 0)
         }
@@ -329,7 +327,7 @@ class MainKtTest {
                 arrayOf("X", "O", "")
             )
 
-            val value = minimax(initialState)
+            val value = minimax(initialState, rules)
 
             assertEquals(-1, value)
         }
@@ -342,7 +340,7 @@ class MainKtTest {
                 arrayOf("O", "X", "")
             )
 
-            val value = minimax(initialState)
+            val value = minimax(initialState, rules)
 
             assertEquals(1, value)
         }
@@ -355,7 +353,7 @@ class MainKtTest {
                 arrayOf("O", "X", "O")
             )
 
-            val value = minimax(initialState)
+            val value = minimax(initialState, rules)
 
             assertEquals(0, value)
         }
@@ -368,7 +366,7 @@ class MainKtTest {
                 arrayOf("", "", "")
             )
 
-            val value = minimax(initialState)
+            val value = minimax(initialState, rules)
 
             assertEquals(0, value)
         }
@@ -381,7 +379,7 @@ class MainKtTest {
                 arrayOf("X", "O", "")
             )
 
-            val value = minimax(initialState)
+            val value = minimax(initialState, rules)
 
             assertEquals(1, value)
         }

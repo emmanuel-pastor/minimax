@@ -1,62 +1,13 @@
 package com.emmanuel.pastor.simplesmartapps
 
-import com.emmanuel.pastor.simplesmartapps.Minimax.isTerminal
-import com.emmanuel.pastor.simplesmartapps.Minimax.minimax
-import com.emmanuel.pastor.simplesmartapps.Minimax.nextPlayer
-import com.emmanuel.pastor.simplesmartapps.Minimax.nextState
-import com.emmanuel.pastor.simplesmartapps.Minimax.possibleActions
-
-fun State.print() {
-    this.forEach { line ->
-        println(line.contentToString())
-    }
-    println()
-}
-
-class TicTacToe(private val state: State) {
-    val isOver get() = isTerminal(state)
-
-    fun nextOptimalPlay(): Coords {
-        val actions = possibleActions(state)
-        val plays = mutableListOf<Pair<Coords, Int>>()
-        val nextPlayer = nextPlayer(state)
-        actions.forEach { action ->
-            val value = minimax(nextState(state, action, nextPlayer))
-            plays.add(action to value)
-        }
-
-        return when (nextPlayer) {
-            Player.Max -> {
-                plays.maxBy { (_, value) -> value }.first
-            }
-
-            Player.Min -> {
-                plays.minBy { (_, value) -> value }.first
-            }
-        }
-    }
-
-    fun play(action: Coords) {
-        val (line, column) = action
-        require(state[line][column].isBlank()) {
-            "Cannot play on cell ($line, $column). This cell is not empty."
-        }
-        require(!isTerminal(state)) {
-            "Cannot play. The game is already over."
-        }
-
-        state[line][column] = nextPlayer(state).symbol
-    }
-
-    fun printState() = state.print()
-}
+import kotlin.random.Random
 
 fun isInputValid(input: String): Boolean {
     val regex = Regex("^\\s*[0-2]\\s*,\\s*[0-2]\\s*\$")
     return regex.matches(input)
 }
 
-fun extractNumbers(input: String): Coords {
+fun extractNumbers(input: String): Action {
     val regex = Regex("^\\s*([0-2])\\s*,\\s*([0-2])\\s*$")
     val matchResult = regex.find(input)
 
@@ -73,16 +24,22 @@ fun main() {
         arrayOf("", "", ""),
         arrayOf("", "", "")
     )
+    val difficulty = 0.7
 
-    val game = TicTacToe(initialState)
+    val game = Game(initialState, TicTacToeRules())
 
-    var nextPlayer: Player = Player.Min
     while (!game.isOver) {
         game.printState()
-        when(nextPlayer) {
+        when(game.nextPlayer) {
             Player.Min -> {
-                game.play(game.nextOptimalPlay())
-                nextPlayer = Player.Max
+                val random = Random.nextFloat()
+                if (random < difficulty) {
+                    println("OPTIMAL")
+                    game.playOptimal()
+                } else {
+                    println("RANDOM")
+                    game.playRandom()
+                }
             }
             Player.Max -> {
                 var input: String
@@ -92,7 +49,6 @@ fun main() {
                 } while (!isInputValid(input))
 
                 game.play(extractNumbers(input))
-                nextPlayer = Player.Min
             }
         }
     }
