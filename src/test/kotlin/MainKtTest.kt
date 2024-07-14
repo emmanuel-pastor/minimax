@@ -1,4 +1,10 @@
 import com.emmanuel.pastor.simplesmartapps.*
+import com.emmanuel.pastor.simplesmartapps.Minimax.isTerminal
+import com.emmanuel.pastor.simplesmartapps.Minimax.minimax
+import com.emmanuel.pastor.simplesmartapps.Minimax.nextPlayer
+import com.emmanuel.pastor.simplesmartapps.Minimax.nextState
+import com.emmanuel.pastor.simplesmartapps.Minimax.possibleActions
+import com.emmanuel.pastor.simplesmartapps.Minimax.valueOf
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
