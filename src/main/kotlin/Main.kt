@@ -156,12 +156,17 @@ fun main() {
             XO_
      */
     val initialState = arrayOf(
-        arrayOf("X", "X", ""),
-        arrayOf("O", "O", ""),
-        arrayOf("X", "O", "")
+        arrayOf("O", "X", ""),
+        arrayOf("O", "X", ""),
+        arrayOf("X", "O", "O")
     )
 
-    val nextAction = minimax(initialState)
+    val actions = possibleActions(initialState)
+    val plays = mutableListOf<Pair<Coords, Int>>()
+    actions.forEach { action ->
+        val value = minimax(nextState(initialState, action, Player.Max))
+        plays.add(action to value)
+    }
 
-    println(nextAction)
+    println("Best play: ${plays.maxBy { (_, value) -> value }}")
 }
