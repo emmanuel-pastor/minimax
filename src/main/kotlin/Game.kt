@@ -9,7 +9,7 @@ sealed class Player {
     data object Min : Player()
 }
 
-class Game<S, A>(private var state: S, private val rules: GameRules<S, A>) {
+class Game<S, A>(private var state: S, private val depth: Int, private val rules: GameRules<S, A>) {
 
     val nextPlayer get() = rules.nextPlayer(state)
     val isOver get() = rules.isTerminal(state)
@@ -27,7 +27,7 @@ class Game<S, A>(private var state: S, private val rules: GameRules<S, A>) {
         val plays = mutableListOf<Pair<A, Int>>()
         val nextPlayer = rules.nextPlayer(state)
         actions.forEach { action ->
-            val value = minimax(rules.nextState(state, action), rules)
+            val value = minimax(rules.nextState(state, action), depth, Int.MIN_VALUE, Int.MAX_VALUE, rules)
             plays.add(action to value)
         }
 
@@ -60,23 +60,29 @@ interface GameRules<S, A> {
     fun printState(state: S)
 }
 
-fun <S, A> minimax(state: S, rules: GameRules<S, A>): Int {
-    if (rules.isTerminal(state)) return rules.valueOf(state)
+fun <S, A> minimax(state: S, depth: Int, alpha: Int, beta: Int, rules: GameRules<S, A>): Int {
+    if (rules.isTerminal(state) || depth == 0) return rules.valueOf(state)
 
     val possibleActions = rules.possibleActions(state)
+    var a = alpha
+    var b = beta
     return when (rules.nextPlayer(state)) {
         Player.Max -> {
             var value = Int.MIN_VALUE
-            possibleActions.forEach { action ->
-                value = max(value, minimax(rules.nextState(state, action), rules))
+            for (action in possibleActions) {
+                value = max(value, minimax(rules.nextState(state, action), depth - 1, a, b, rules))
+                a = max(a, value)
+                if (value >= b) break
             }
             value
         }
 
         Player.Min -> {
             var value = Int.MAX_VALUE
-            possibleActions.forEach { action ->
-                value = min(value, minimax(rules.nextState(state, action), rules))
+            for (action in possibleActions) {
+                value = min(value, minimax(rules.nextState(state, action), depth - 1, a, b, rules))
+                b = min(b, value)
+                if (value <= a) break
             }
             value
         }

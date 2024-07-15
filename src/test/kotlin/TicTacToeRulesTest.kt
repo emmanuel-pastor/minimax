@@ -327,7 +327,7 @@ class TicTacToeRulesTest {
                 arrayOf("X", "O", "")
             )
 
-            val value = minimax(initialState, rules)
+            val value = minimax(initialState, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, rules)
 
             assertEquals(-1, value)
         }
@@ -340,7 +340,7 @@ class TicTacToeRulesTest {
                 arrayOf("O", "X", "")
             )
 
-            val value = minimax(initialState, rules)
+            val value = minimax(initialState, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, rules)
 
             assertEquals(1, value)
         }
@@ -353,7 +353,7 @@ class TicTacToeRulesTest {
                 arrayOf("O", "X", "O")
             )
 
-            val value = minimax(initialState, rules)
+            val value = minimax(initialState, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, rules)
 
             assertEquals(0, value)
         }
@@ -366,7 +366,7 @@ class TicTacToeRulesTest {
                 arrayOf("", "", "")
             )
 
-            val value = minimax(initialState, rules)
+            val value = minimax(initialState, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, rules)
 
             assertEquals(0, value)
         }
@@ -379,7 +379,7 @@ class TicTacToeRulesTest {
                 arrayOf("X", "O", "")
             )
 
-            val value = minimax(initialState, rules)
+            val value = minimax(initialState, Int.MAX_VALUE, Int.MIN_VALUE, Int.MAX_VALUE, rules)
 
             assertEquals(1, value)
         }

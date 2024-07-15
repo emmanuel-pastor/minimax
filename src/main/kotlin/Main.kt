@@ -26,7 +26,7 @@ fun main() {
     )
     val difficulty = 0.7
 
-    val game = Game(initialState, TicTacToeRules())
+    val game = Game(initialState, Int.MAX_VALUE, TicTacToeRules())
 
     while (!game.isOver) {
         game.printState()
