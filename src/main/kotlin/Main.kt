@@ -20,9 +20,9 @@ fun extractNumbers(input: String): Action {
 
 fun main() {
     val initialState = arrayOf(
-        arrayOf("", "", ""),
-        arrayOf("", "", ""),
-        arrayOf("", "", "")
+        arrayOf(" ", " ", " "),
+        arrayOf(" ", " ", " "),
+        arrayOf(" ", " ", " ")
     )
     val difficulty = 0.7
 

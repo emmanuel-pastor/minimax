@@ -4,9 +4,9 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 
-sealed class Player(val symbol: String) {
-    data object Max : Player("X")
-    data object Min : Player("O")
+sealed class Player {
+    data object Max : Player()
+    data object Min : Player()
 }
 
 class Game<S, A>(private var state: S, private val rules: GameRules<S, A>) {

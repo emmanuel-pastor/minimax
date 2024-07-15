@@ -17,6 +17,11 @@ class TicTacToeRules : GameRules<State, Action> {
         arrayOf(0 to 2, 1 to 1, 2 to 0) //diagonal top-right to bottom-left
     )
 
+    private fun Player.symbol(): String = when (this) {
+        Player.Max -> "X"
+        Player.Min -> "O"
+    }
+
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell ->
@@ -40,9 +45,9 @@ class TicTacToeRules : GameRules<State, Action> {
             var minCounter = 0
             var maxCounter = 0
             terminalState.forEach { (row, column) ->
-                if (state[row][column] == Player.Min.symbol) {
+                if (state[row][column] == Player.Min.symbol()) {
                     minCounter++
-                } else if (state[row][column] == Player.Max.symbol) {
+                } else if (state[row][column] == Player.Max.symbol()) {
                     maxCounter++
                 }
             }
@@ -85,7 +90,7 @@ class TicTacToeRules : GameRules<State, Action> {
             Array(state[x].size) { y ->
                 state[x][y]
             }
-        }.also { it[row][column] = nextPlayer(state).symbol }
+        }.also { it[row][column] = nextPlayer(state).symbol() }
     }
 
     override fun valueOf(state: State): Int {
@@ -93,9 +98,9 @@ class TicTacToeRules : GameRules<State, Action> {
             var minCounter = 0
             var maxCounter = 0
             terminalState.forEach { (row, column) ->
-                if (state[row][column] == Player.Min.symbol) {
+                if (state[row][column] == Player.Min.symbol()) {
                     minCounter++
-                } else if (state[row][column] == Player.Max.symbol) {
+                } else if (state[row][column] == Player.Max.symbol()) {
                     maxCounter++
                 }
             }
@@ -114,8 +119,9 @@ class TicTacToeRules : GameRules<State, Action> {
     }
 
     override fun printState(state: State) {
-        state.forEach { line ->
-            println(line.contentToString())
+        println("   0  1  2")
+        state.forEachIndexed { index, line ->
+            println("$index ${line.contentToString()}")
         }
         println()
     }
