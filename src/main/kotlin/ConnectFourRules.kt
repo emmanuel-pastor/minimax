@@ -1,6 +1,8 @@
 package com.emmanuel.pastor.simplesmartapps
 
-class ConnectFourRules: GameRules<State, Action> {
+typealias CFAction = Int
+
+class ConnectFourRules : GameRules<State, CFAction> {
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell ->
@@ -23,24 +25,27 @@ class ConnectFourRules: GameRules<State, Action> {
         TODO("Not yet implemented")
     }
 
-    override fun possibleActions(state: State): Array<Action> {
-        val actions = mutableListOf<Action>()
-        val excludedColumns = hashSetOf<Int>()
-        for (x in state.indices.reversed()) {
-            state[x].forEachIndexed { y, cell ->
-                if (!excludedColumns.contains(y) && cell.isBlank()) {
-                    actions.add(x to y)
-                    excludedColumns.add(y)
+    override fun possibleActions(state: State): Array<CFAction> {
+        val actions = mutableListOf<CFAction>()
+
+        var x = 0
+        while (actions.size != 7 && x < state.size) {
+            val line = state[x]
+            for (y in line.indices) {
+                if (line[y].isBlank()) {
+                    actions.add(y)
                 }
+
+                if (actions.size == 7) break
             }
 
-            if(excludedColumns.size == state.first().size) break
+            x++
         }
 
         return actions.toTypedArray()
     }
 
-    override fun nextState(state: State, action: Action): State {
+    override fun nextState(state: State, action: CFAction): State {
         TODO("Not yet implemented")
     }
 

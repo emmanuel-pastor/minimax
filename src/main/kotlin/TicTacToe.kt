@@ -3,9 +3,9 @@ package com.emmanuel.pastor.simplesmartapps
 import kotlin.math.max
 
 typealias State = Array<Array<String>>
-typealias Action = Pair<Int, Int>
+typealias T3Action = Pair<Int, Int>
 
-class TicTacToeRules : GameRules<State, Action> {
+class TicTacToeRules : GameRules<State, T3Action> {
     private val terminalStates = arrayOf(
         arrayOf(0 to 0, 0 to 1, 0 to 2), //first row
         arrayOf(1 to 0, 1 to 1, 1 to 2), //second row
@@ -64,8 +64,8 @@ class TicTacToeRules : GameRules<State, Action> {
         return turnsPlayed > 8
     }
 
-    override fun possibleActions(state: State): Array<Action> {
-        val actions = mutableListOf<Action>()
+    override fun possibleActions(state: State): Array<T3Action> {
+        val actions = mutableListOf<T3Action>()
         state.forEachIndexed { x, row ->
             row.forEachIndexed { y, cell ->
                 if (cell.isBlank()) {
@@ -77,7 +77,7 @@ class TicTacToeRules : GameRules<State, Action> {
         return actions.toTypedArray()
     }
 
-    override fun nextState(state: State, action: Action): State {
+    override fun nextState(state: State, action: T3Action): State {
         val (row, column) = action
         require(row in 0..2 && column in 0..2) {
             "Coordinates ($row, $column) are out of the grid"

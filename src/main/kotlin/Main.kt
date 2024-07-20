@@ -7,7 +7,7 @@ fun isInputValid(input: String): Boolean {
     return regex.matches(input)
 }
 
-fun extractNumbers(input: String): Action {
+fun extractNumbers(input: String): T3Action {
     val regex = Regex("^\\s*([0-2])\\s*,\\s*([0-2])\\s*$")
     val matchResult = regex.find(input)
 

@@ -105,9 +105,7 @@ class ConnectFourRulesTest {
 
             val actions = rules.possibleActions(initialState)
 
-            val expectedActions = arrayOf(
-                5 to 0, 5 to 1, 5 to 2, 5 to 3, 5 to 4, 5 to 5, 5 to 6,
-            )
+            val expectedActions = arrayOf(0, 1, 2, 3, 4, 5, 6)
             assert(actions.contentDeepEquals(expectedActions))
         }
 
@@ -124,7 +122,7 @@ class ConnectFourRulesTest {
 
             val actions = rules.possibleActions(initialState)
 
-            val expectedActions = arrayOf(0 to 1)
+            val expectedActions = arrayOf(1)
             assert(actions.contentDeepEquals(expectedActions))
         }
 
@@ -141,7 +139,7 @@ class ConnectFourRulesTest {
 
             val actions = rules.possibleActions(initialState)
 
-            val expectedActions = arrayOf(5 to 3, 5 to 4, 5 to 5, 5 to 6, 4 to 1, 4 to 2, 2 to 0)
+            val expectedActions = arrayOf(0, 1, 2, 3, 4, 5, 6)
             assert(actions.contentEquals(expectedActions))
         }
     }
