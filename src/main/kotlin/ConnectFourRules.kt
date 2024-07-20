@@ -29,8 +29,8 @@ class ConnectFourRules : GameRules<State, CFAction> {
     override fun isTerminal(state: State): Boolean {
         return isTerminalWithHorizontal(state)
                 || isTerminalWithVertical(state)
-                || isTerminalWithDiagonalTopLeftToBottomRight(state)
-                || isTerminalWithDiagonalTopRightToBottomLeft(state)
+                || isTerminalWithNegativeSlopeDiagonal(state)
+                || isTerminalWithPositiveSlopeDiagonal(state)
                 || isTerminalWithFullGrid(state)
     }
 
@@ -84,7 +84,7 @@ class ConnectFourRules : GameRules<State, CFAction> {
         return false
     }
 
-    private fun isTerminalWithDiagonalTopLeftToBottomRight(state: State): Boolean {
+    private fun isTerminalWithNegativeSlopeDiagonal(state: State): Boolean {
         for (x in 0..2) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -105,7 +105,7 @@ class ConnectFourRules : GameRules<State, CFAction> {
         return false
     }
 
-    private fun isTerminalWithDiagonalTopRightToBottomLeft(state: State): Boolean {
+    private fun isTerminalWithPositiveSlopeDiagonal(state: State): Boolean {
         for (x in 3..5) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -155,8 +155,8 @@ class ConnectFourRules : GameRules<State, CFAction> {
         }
 
         val nextState = state.copyOf()
-        for(line in nextState.reversed()) {
-            if(line[action].isBlank()) {
+        for (line in nextState.reversed()) {
+            if (line[action].isBlank()) {
                 line[action] = nextPlayer(state).symbol()
                 break
             }
@@ -166,7 +166,123 @@ class ConnectFourRules : GameRules<State, CFAction> {
     }
 
     override fun valueOf(state: State): Int {
-        TODO("Not yet implemented")
+        val nextPlayer = nextPlayer(state)
+
+        val isNotDraw = isTerminalWithHorizontal(state)
+                || isTerminalWithVertical(state)
+                || isTerminalWithNegativeSlopeDiagonal(state)
+                || isTerminalWithPositiveSlopeDiagonal(state)
+        return when (nextPlayer) {
+            Player.Max -> {
+                if (isNotDraw) {
+                    //Min won the previous Turn
+                    Int.MIN_VALUE
+                } else {
+                    scorePosition(state, nextPlayer) - scorePosition(state, Player.Min)
+                }
+            }
+
+            Player.Min -> {
+                if (isNotDraw) {
+                    //Max won the previous turn
+                    Int.MAX_VALUE
+                } else {
+                    -1 * (scorePosition(state, nextPlayer) - scorePosition(state, Player.Max))
+                }
+            }
+        }
+    }
+
+    private fun scorePosition(state: State, nextPlayer: Player): Int {
+        val nextPlayerSymbol = nextPlayer.symbol()
+        var score = 0
+
+        //Score center column
+        val centerArray = Array(state.size) { x ->
+            state[x][3]
+        }
+        val centerCount = centerArray.count { it == nextPlayerSymbol }
+        score += centerCount * 6
+        println("central ${nextPlayer}: $score")
+
+        //Score horizontal
+        var prevScore = score
+        for (row in state) {
+            for (y in 0..3) {
+                val window = row.sliceArray(y..y + 3)
+                score += evaluateWindow(window, nextPlayer)
+            }
+        }
+        println("horizontal ${nextPlayer}: ${score - prevScore}")
+
+        //Score vertical
+        prevScore = score
+        for (y in 0..6) {
+            val column = Array(state.size) { x ->
+                state[x][y]
+            }
+            for (x in 0..2) {
+                val window = column.sliceArray(x..x + 3)
+                score += evaluateWindow(window, nextPlayer)
+            }
+        }
+        println("vertical ${nextPlayer}: ${score - prevScore}")
+
+        //Score positive slope diagonal
+        prevScore = score
+        for (x in 0..2) {
+            for (y in 0..3) {
+                val window = Array(4) { i ->
+                    state[x + i][y + i]
+                }
+                score += evaluateWindow(window, nextPlayer)
+            }
+        }
+        println("positive slope ${nextPlayer}: ${score - prevScore}")
+
+        //Score negative slope diagonal
+        prevScore = score
+        for (x in 3..5) {
+            for (y in 0..3) {
+                val window = Array(4) { i ->
+                    state[x - i][y + i]
+                }
+                score += evaluateWindow(window, nextPlayer)
+            }
+        }
+        println("negative slope ${nextPlayer}: ${score - prevScore}")
+        println("total $nextPlayer: $score")
+
+        return score
+    }
+
+    private fun evaluateWindow(window: Array<String>, nextPlayer: Player): Int {
+        var score = 0
+        val playerSymbol = nextPlayer.symbol()
+        val opponentSymbol = when (nextPlayer) {
+            Player.Max -> Player.Min.symbol()
+            Player.Min -> Player.Max.symbol()
+        }
+
+        when {
+            window.count { it == playerSymbol } == 4 -> {
+                score += 100
+            }
+
+            window.count { it == playerSymbol } == 3 && window.count { it.isBlank() } == 1 -> {
+                score += 10
+            }
+
+            window.count { it == playerSymbol } == 2 && window.count { it.isBlank() } == 2 -> {
+                score += 5
+            }
+        }
+
+        if (window.count { it == opponentSymbol } == 3 && window.count { it.isBlank() } == 1) {
+            score -= 80
+        }
+
+        return score
     }
 
     override fun printState(state: State) {

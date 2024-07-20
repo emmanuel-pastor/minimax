@@ -406,4 +406,87 @@ class ConnectFourRulesTest {
             assert(nextState.contentDeepEquals(expectedState))
         }
     }
+
+    @Nested
+    inner class ValueOfTests {
+        @Test
+        fun `return MAX Int when Max won`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf("X", " ", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "O", " ", " ", " ", " ")
+            )
+
+            val value = rules.valueOf(initialState)
+
+            assertEquals(value, Int.MAX_VALUE)
+        }
+
+        @Test
+        fun `return MIN Int when Min won`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf("O", " ", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", " ", " ", " ", " ", " ")
+            )
+
+            val value = rules.valueOf(initialState)
+
+            assertEquals(value, Int.MIN_VALUE)
+        }
+
+        @Test
+        fun `return positive value when Max is one token from winning`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", "X", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", "O", " ", " ", " ", " "),
+                arrayOf("O", "X", "O", " ", " ", " ", " ")
+            )
+
+            val value = rules.valueOf(initialState)
+
+            assert(value > 0)
+        }
+
+        @Test
+        fun `return positive value when Min is one token from winning`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf("O", " ", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", " ", " ", " ", " ", " "),
+                arrayOf("O", "X", "X", " ", " ", " ", " ")
+            )
+
+            val value = rules.valueOf(initialState)
+
+            assert(value < 0)
+        }
+
+        @Test
+        fun `return expected value given a specific state`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", "O", " ", " ", " "),
+                arrayOf("O", "X", "X", "X", " ", " ", " "),
+                arrayOf("O", "X", "O", "O", " ", " ", " ")
+            )
+
+            val value = rules.valueOf(initialState)
+
+            assertEquals(84, value)
+        }
+    }
 }
