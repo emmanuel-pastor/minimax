@@ -163,7 +163,7 @@ class TicTacToeRulesTest {
                 1 to 0, 1 to 1, 1 to 2,
                 2 to 0, 2 to 1, 2 to 2
             )
-            assert(actions.contentDeepEquals(expectedActions))
+            assert(actions.contentEquals(expectedActions))
         }
 
         @Test
@@ -177,7 +177,7 @@ class TicTacToeRulesTest {
             val actions = rules.possibleActions(initialState)
 
             val expectedActions = arrayOf(0 to 0)
-            assert(actions.contentDeepEquals(expectedActions))
+            assert(actions.contentEquals(expectedActions))
         }
 
         @Test
@@ -191,7 +191,7 @@ class TicTacToeRulesTest {
             val actions = rules.possibleActions(initialState)
 
             val expectedActions = arrayOf(0 to 2, 1 to 1)
-            assert(actions.contentDeepEquals(expectedActions))
+            assert(actions.contentEquals(expectedActions))
         }
     }
 
