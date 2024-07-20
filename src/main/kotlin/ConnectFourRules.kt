@@ -30,6 +30,7 @@ class ConnectFourRules : GameRules<State, CFAction> {
         return isTerminalWithHorizontal(state)
                 || isTerminalWithVertical(state)
                 || isTerminalWithDiagonalTopLeftToBottomRight(state)
+                || isTerminalWithDiagonalTopRightToBottomLeft(state)
                 || isTerminalWithFullGrid(state)
     }
 
@@ -84,16 +85,37 @@ class ConnectFourRules : GameRules<State, CFAction> {
     }
 
     private fun isTerminalWithDiagonalTopLeftToBottomRight(state: State): Boolean {
-        for(x in 0..2) {
-            for(y in 0..3) {
+        for (x in 0..2) {
+            for (y in 0..3) {
                 var streakMinPlayer = 0
                 var streakMaxPlayer = 0
-                for(i in 0..3) {
-                    val cell = state[x+i][y+i]
-                    if(cell == Player.Min.symbol()) {
+                for (i in 0..3) {
+                    val cell = state[x + i][y + i]
+                    if (cell == Player.Min.symbol()) {
                         streakMinPlayer++
                         streakMaxPlayer = 0
-                    } else if(cell == Player.Max.symbol()) {
+                    } else if (cell == Player.Max.symbol()) {
+                        streakMaxPlayer++
+                        streakMinPlayer = 0
+                    }
+                }
+                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+            }
+        }
+        return false
+    }
+
+    private fun isTerminalWithDiagonalTopRightToBottomLeft(state: State): Boolean {
+        for (x in 3..5) {
+            for (y in 0..3) {
+                var streakMinPlayer = 0
+                var streakMaxPlayer = 0
+                for (i in 0..3) {
+                    val cell = state[x - i][y + i]
+                    if (cell == Player.Min.symbol()) {
+                        streakMinPlayer++
+                        streakMaxPlayer = 0
+                    } else if (cell == Player.Max.symbol()) {
                         streakMaxPlayer++
                         streakMinPlayer = 0
                     }
