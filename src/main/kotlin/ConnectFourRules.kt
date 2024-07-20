@@ -147,7 +147,22 @@ class ConnectFourRules : GameRules<State, CFAction> {
     }
 
     override fun nextState(state: State, action: CFAction): State {
-        TODO("Not yet implemented")
+        require(action in 0..6) {
+            "The column number $action is out of the grid. Valid column numbers is included in [0,6]."
+        }
+        require(state.first()[action].isBlank()) {
+            "Column $action is full. You cannot add any token in this column."
+        }
+
+        val nextState = state.copyOf()
+        for(line in nextState.reversed()) {
+            if(line[action].isBlank()) {
+                line[action] = nextPlayer(state).symbol()
+                break
+            }
+        }
+
+        return nextState
     }
 
     override fun valueOf(state: State): Int {

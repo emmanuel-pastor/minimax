@@ -322,4 +322,88 @@ class ConnectFourRulesTest {
             assertEquals(false, isTerminal)
         }
     }
+
+    @Nested
+    inner class NextStateTests {
+        @Test
+        fun `throws an exception when given coordinates out of the grid`() {
+            val initialState = arrayOf(
+                arrayOf("O", "O", "", "", "X", "X", "O"),
+                arrayOf("X", "O", "O", "O", "X", "O", "X"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "X", "O", "X", "O", "X", "X"),
+                arrayOf("O", "X", "O", "X", "X", "O", "O"),
+                arrayOf("X", "O", "X", "O", "O", "O", "X")
+            )
+
+            assertThrows(IllegalArgumentException::class.java) {
+                rules.nextState(initialState, (-1))
+            }
+        }
+
+        @Test
+        fun `throws an exception when given coordinates for an non empty cell`() {
+            val initialState = arrayOf(
+                arrayOf("O", "O", "", "", "X", "X", "O"),
+                arrayOf("X", "O", "O", "O", "X", "O", "X"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "X", "O", "X", "O", "X", "X"),
+                arrayOf("O", "X", "O", "X", "X", "O", "O"),
+                arrayOf("X", "O", "X", "O", "O", "O", "X")
+            )
+
+            assertThrows(IllegalArgumentException::class.java) {
+                rules.nextState(initialState, (0))
+            }
+        }
+
+        @Test
+        fun `return the right state given a normal initial state and action and playing with Min`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "", " ", " ", " ", " ")
+            )
+
+
+            val nextState = rules.nextState(initialState, (1))
+
+            val expectedState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "", " ", " ", " ", " ")
+            )
+            assert(nextState.contentDeepEquals(expectedState))
+        }
+
+        fun `return the right state given a normal initial state and action and playing with Max`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "", " ", " ", " ", " ")
+            )
+
+
+            val nextState = rules.nextState(initialState, (0))
+
+            val expectedState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "", " ", " ", " ", " ")
+            )
+            assert(nextState.contentDeepEquals(expectedState))
+        }
+    }
 }
