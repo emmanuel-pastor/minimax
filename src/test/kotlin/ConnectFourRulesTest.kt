@@ -243,14 +243,46 @@ class ConnectFourRulesTest {
         }
 
         @Test
+        fun `return true given Min won with a top left to bottom right diagonal before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("X", "", "O", "O", "X", "X", "X"),
+                arrayOf("O", "X", "X", "X", "O", "O", "X"),
+                arrayOf("X", "X", "O", "O", "X", "O", "X"),
+                arrayOf("O", "O", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "X", "X", "X", "O", "O"),
+                arrayOf("X", "X", "O", "X", "O", "X", "O")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
+        fun `return true given Max won with a top left to bottom right diagonal before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("X", " ", " ", "O", "X", "X", "X"),
+                arrayOf("O", "X", "X", "X", "O", "O", "X"),
+                arrayOf("X", "O", "O", "O", "X", "O", "O"),
+                arrayOf("O", "X", "X", "O", "O", "X", "X"),
+                arrayOf("O", "O", "X", "X", "O", "X", "X"),
+                arrayOf("X", "O", "O", "X", "X", "X", "O")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
         fun `return false given no player won yet`() {
             val initialState = arrayOf(
                 arrayOf("O", "O", "", "", "X", "X", "O"),
                 arrayOf("X", "O", "O", "O", "X", "O", "X"),
                 arrayOf("O", "X", "X", "X", "O", "X", "O"),
-                arrayOf("X", "O", "O", "X", "O", "O", "X"),
-                arrayOf("O", "X", "O", "X", "X", "X", "O"),
-                arrayOf("X", "O", "X", "O", "X", "O", "X")
+                arrayOf("X", "X", "O", "X", "O", "X", "X"),
+                arrayOf("O", "X", "O", "X", "X", "O", "O"),
+                arrayOf("X", "O", "X", "O", "O", "O", "X")
             )
 
             val isTerminal = rules.isTerminal(initialState)
