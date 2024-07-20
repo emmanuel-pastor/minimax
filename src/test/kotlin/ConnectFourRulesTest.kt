@@ -143,4 +143,55 @@ class ConnectFourRulesTest {
             assert(actions.contentEquals(expectedActions))
         }
     }
+
+    @Nested
+    inner class IsTerminalTests {
+        @Test
+        fun `return false given empty grid state`() {
+            val initialState = arrayOf(
+                arrayOf("", "", "", "", "", "", ""),
+                arrayOf("", "", "", "", "", "", ""),
+                arrayOf("", "", "", "", "", "", ""),
+                arrayOf("", "", "", "", "", "", ""),
+                arrayOf("", "", "", "", "", "", ""),
+                arrayOf("", "", "", "", "", "", "")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(isTerminal, false)
+        }
+
+        @Test
+        fun `return true given full grid state with a draw`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", "O", "X", "O", "X", "O"),
+                arrayOf("X", "O", "O", "O", "X", "O", "X"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "O", "X", "O", "O", "X"),
+                arrayOf("O", "X", "O", "X", "X", "X", "O"),
+                arrayOf("X", "O", "X", "O", "X", "O", "X")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
+        }
+
+        @Test
+        fun `return true given Max won with a line before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("O", "O", "O", "X", "X", "X", "X"),
+                arrayOf("X", "O", "O", "O", "X", "O", "O"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "O", "X", "O", "O", "X"),
+                arrayOf("O", "X", "O", "X", "X", "X", "O"),
+                arrayOf("X", "O", "X", "O", "X", "O", "X")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(isTerminal, true)
+        }
+    }
 }

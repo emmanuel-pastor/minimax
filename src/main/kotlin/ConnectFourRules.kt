@@ -22,7 +22,23 @@ class ConnectFourRules : GameRules<State, CFAction> {
     }
 
     override fun isTerminal(state: State): Boolean {
-        TODO("Not yet implemented")
+        return isTerminalWithHorizontal(state)
+    }
+
+    private fun isTerminalWithHorizontal(state: State): Boolean {
+        for(x in 0..5) {
+            val winnerSymbol = state[x].firstOrNull { it.isNotBlank() }
+            if(winnerSymbol == null) continue
+
+            for(y in 0..4) {
+                var streak = 0
+                for (i in 0..3) {
+                    if(state[x][y] == winnerSymbol) streak++
+                }
+                if (streak == 4) return true
+            }
+        }
+        return false
     }
 
     override fun possibleActions(state: State): Array<CFAction> {
