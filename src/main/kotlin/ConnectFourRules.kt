@@ -3,6 +3,11 @@ package com.emmanuel.pastor.simplesmartapps
 typealias CFAction = Int
 
 class ConnectFourRules : GameRules<State, CFAction> {
+    private fun Player.symbol(): String = when (this) {
+        Player.Max -> "X"
+        Player.Min -> "O"
+    }
+
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell ->
@@ -23,19 +28,54 @@ class ConnectFourRules : GameRules<State, CFAction> {
 
     override fun isTerminal(state: State): Boolean {
         return isTerminalWithHorizontal(state)
+                || isTerminalWithVertical(state)
+                || isTerminalWithFullGrid(state)
+    }
+
+    private fun isTerminalWithFullGrid(state: State): Boolean {
+        return state.sumOf { line ->
+            line.count { value ->
+                value.isBlank()
+            }
+        } == 0
     }
 
     private fun isTerminalWithHorizontal(state: State): Boolean {
-        for(x in 0..5) {
-            val winnerSymbol = state[x].firstOrNull { it.isNotBlank() }
-            if(winnerSymbol == null) continue
-
-            for(y in 0..4) {
-                var streak = 0
+        for (x in 0..5) {
+            for (y in 0..3) {
+                var streakMinPlayer = 0
+                var streakMaxPlayer = 0
                 for (i in 0..3) {
-                    if(state[x][y] == winnerSymbol) streak++
+                    if (state[x][y + i] == Player.Min.symbol()) {
+                        streakMinPlayer++
+                        streakMaxPlayer = 0
+                    } else if (state[x][y + i] == Player.Max.symbol()) {
+                        streakMaxPlayer++
+                        streakMinPlayer = 0
+                    }
                 }
-                if (streak == 4) return true
+                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+            }
+        }
+        return false
+    }
+
+    private fun isTerminalWithVertical(state: State): Boolean {
+        for (y in 0..6) {
+            for (x in 0..2) {
+                state[x]
+                var streakMinPlayer = 0
+                var streakMaxPlayer = 0
+                for (i in 0..3) {
+                    if (state[x + i][y] == Player.Min.symbol()) {
+                        streakMinPlayer++
+                        streakMaxPlayer = 0
+                    } else if (state[x + i][y] == Player.Max.symbol()) {
+                        streakMaxPlayer++
+                        streakMinPlayer = 0
+                    }
+                }
+                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
             }
         }
         return false

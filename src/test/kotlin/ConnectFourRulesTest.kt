@@ -175,13 +175,13 @@ class ConnectFourRulesTest {
 
             val isTerminal = rules.isTerminal(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(true, isTerminal)
         }
 
         @Test
         fun `return true given Max won with a line before full grid`() {
             val initialState = arrayOf(
-                arrayOf("O", "O", "O", "X", "X", "X", "X"),
+                arrayOf("O", "O", "", "X", "X", "X", "X"),
                 arrayOf("X", "O", "O", "O", "X", "O", "O"),
                 arrayOf("O", "X", "X", "X", "O", "X", "O"),
                 arrayOf("X", "O", "O", "X", "O", "O", "X"),
@@ -191,7 +191,71 @@ class ConnectFourRulesTest {
 
             val isTerminal = rules.isTerminal(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
+        fun `return true given Min won with a line before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("X", "X", "", "O", "O", "O", "O"),
+                arrayOf("X", "O", "O", "O", "X", "O", "O"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "O", "X", "O", "O", "X"),
+                arrayOf("O", "X", "O", "X", "X", "X", "O"),
+                arrayOf("X", "O", "X", "O", "X", "O", "X")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
+        fun `return true given Max won with a column before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("O", "", "O", "X", "X", "X", "O"),
+                arrayOf("O", "X", "O", "X", "O", "O", "O"),
+                arrayOf("X", "X", "O", "O", "X", "O", "X"),
+                arrayOf("O", "O", "X", "X", "O", "X", "X"),
+                arrayOf("X", "O", "X", "X", "X", "O", "X"),
+                arrayOf("O", "X", "O", "X", "O", "X", "X")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
+        fun `return true given Min won with a column before full grid`() {
+            val initialState = arrayOf(
+                arrayOf("X", "", "O", "O", "X", "X", "X"),
+                arrayOf("O", "X", "X", "X", "O", "O", "X"),
+                arrayOf("X", "X", "O", "O", "X", "O", "O"),
+                arrayOf("O", "O", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "X", "X", "X", "O", "O"),
+                arrayOf("X", "X", "O", "X", "O", "X", "O")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(true, isTerminal)
+        }
+
+        @Test
+        fun `return false given no player won yet`() {
+            val initialState = arrayOf(
+                arrayOf("O", "O", "", "", "X", "X", "O"),
+                arrayOf("X", "O", "O", "O", "X", "O", "X"),
+                arrayOf("O", "X", "X", "X", "O", "X", "O"),
+                arrayOf("X", "O", "O", "X", "O", "O", "X"),
+                arrayOf("O", "X", "O", "X", "X", "X", "O"),
+                arrayOf("X", "O", "X", "O", "X", "O", "X")
+            )
+
+            val isTerminal = rules.isTerminal(initialState)
+
+            assertEquals(false, isTerminal)
         }
     }
 }
