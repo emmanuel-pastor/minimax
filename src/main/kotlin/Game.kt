@@ -12,7 +12,7 @@ sealed class Player {
 class Game<S, A>(private var state: S, private val depth: Int, private val rules: GameRules<S, A>) {
 
     val nextPlayer get() = rules.nextPlayer(state)
-    val isOver get() = rules.isTerminal(state)
+    val result get() = rules.getGameResult(state)
 
     fun play(action: A) {
         state = rules.nextState(state, action)
@@ -51,9 +51,15 @@ class Game<S, A>(private var state: S, private val depth: Int, private val rules
     fun printState() = rules.printState(state)
 }
 
+sealed class GameResult {
+    data object Min: GameResult()
+    data object Max: GameResult()
+    data object Draw: GameResult()
+}
+
 interface GameRules<S, A> {
     fun nextPlayer(state: S): Player
-    fun isTerminal(state: S): Boolean
+    fun getGameResult(state: S): GameResult?
     fun possibleActions(state: S): Array<A>
     fun nextState(state: S, action: A): S
     fun valueOf(state: S): Int
@@ -61,7 +67,7 @@ interface GameRules<S, A> {
 }
 
 fun <S, A> minimax(state: S, depth: Int, alpha: Int, beta: Int, rules: GameRules<S, A>): Int {
-    if (rules.isTerminal(state) || depth == 0) return rules.valueOf(state)
+    if (rules.getGameResult(state) != null || depth == 0) return rules.valueOf(state)
 
     val possibleActions = rules.possibleActions(state)
     var a = alpha

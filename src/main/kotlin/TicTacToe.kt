@@ -1,7 +1,5 @@
 package com.emmanuel.pastor.simplesmartapps
 
-import kotlin.math.max
-
 typealias State = Array<Array<String>>
 typealias T3Action = Pair<Int, Int>
 
@@ -40,7 +38,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }
     }
 
-    override fun isTerminal(state: State): Boolean {
+    override fun getGameResult(state: State): GameResult? {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -52,7 +50,8 @@ class TicTacToeRules : GameRules<State, T3Action> {
                 }
             }
 
-            if (max(minCounter, maxCounter) == 3) return true
+            if (minCounter == 3) return GameResult.Min
+            if (maxCounter == 3) return GameResult.Max
         }
 
         val turnsPlayed = state.sumOf { row ->
@@ -61,7 +60,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
             }
         }
 
-        return turnsPlayed > 8
+        return if(turnsPlayed > 8) GameResult.Draw else null
     }
 
     override fun possibleActions(state: State): Array<T3Action> {

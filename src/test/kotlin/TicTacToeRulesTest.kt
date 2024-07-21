@@ -1,3 +1,4 @@
+import com.emmanuel.pastor.simplesmartapps.GameResult
 import com.emmanuel.pastor.simplesmartapps.Player
 import com.emmanuel.pastor.simplesmartapps.TicTacToeRules
 import com.emmanuel.pastor.simplesmartapps.minimax
@@ -65,70 +66,70 @@ class TicTacToeRulesTest {
     }
 
     @Nested
-    inner class IsTerminalTests {
+    inner class GameResultTests {
         @Test
-        fun `return false given empty grid state`() {
+        fun `return null given empty grid state`() {
             val initialState = arrayOf(
                 arrayOf("", "", ""),
                 arrayOf("", "", ""),
                 arrayOf("", "", "")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, false)
+            assertEquals(gameResult, null)
         }
 
         @Test
-        fun `return true given full grid state with a draw`() {
+        fun `return Draw given full grid state with a draw`() {
             val initialState = arrayOf(
                 arrayOf("X", "X", "O"),
                 arrayOf("O", "O", "X"),
                 arrayOf("X", "O", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(gameResult, GameResult.Draw)
         }
 
         @Test
-        fun `return true given Min won with a diagonal`() {
+        fun `return Min given Min won with a diagonal`() {
             val initialState = arrayOf(
                 arrayOf("X", "X", "O"),
                 arrayOf("O", "O", "X"),
                 arrayOf("O", "X", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(gameResult, GameResult.Min)
         }
 
         @Test
-        fun `return true given Max won with a line before full grid`() {
+        fun `return Max given Max won with a line before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", "X", "X"),
                 arrayOf("O", "O", "X"),
                 arrayOf("O", "", "")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(gameResult, GameResult.Max)
         }
 
         @Test
-        fun `return true given Max won with a Column`() {
+        fun `return Max given Max won with a Column`() {
             val initialState = arrayOf(
                 arrayOf("X", "X", "O"),
                 arrayOf("O", "X", "X"),
                 arrayOf("O", "X", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, true)
+            assertEquals(gameResult, GameResult.Max)
         }
     }
 

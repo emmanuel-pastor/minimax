@@ -26,23 +26,31 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
     }
 
-    override fun isTerminal(state: State): Boolean {
-        return isTerminalWithHorizontal(state)
-                || isTerminalWithVertical(state)
-                || isTerminalWithNegativeSlopeDiagonal(state)
-                || isTerminalWithPositiveSlopeDiagonal(state)
-                || isTerminalWithFullGrid(state)
+    override fun getGameResult(state: State): GameResult? {
+        val horizontalResult = isTerminalWithHorizontal(state)
+        if (horizontalResult != null) return horizontalResult
+
+        val verticalResult = isTerminalWithVertical(state)
+        if (verticalResult != null) return verticalResult
+
+        val diagonalNegativeSlopeResult = isTerminalWithNegativeSlopeDiagonal(state)
+        if (diagonalNegativeSlopeResult != null) return diagonalNegativeSlopeResult
+
+        val diagonalPositiveSlopeResult = isTerminalWithPositiveSlopeDiagonal(state)
+        if (diagonalPositiveSlopeResult != null) return diagonalPositiveSlopeResult
+
+        return isTerminalWithFullGrid(state)
     }
 
-    private fun isTerminalWithFullGrid(state: State): Boolean {
-        return state.sumOf { line ->
-            line.count { value ->
-                value.isBlank()
-            }
-        } == 0
+    private fun isTerminalWithFullGrid(state: State): GameResult? {
+        return if (state.sumOf { line ->
+                line.count { value ->
+                    value.isBlank()
+                }
+            } == 0) GameResult.Draw else null
     }
 
-    private fun isTerminalWithHorizontal(state: State): Boolean {
+    private fun isTerminalWithHorizontal(state: State): GameResult? {
         for (x in 0..5) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -57,13 +65,14 @@ class ConnectFourRules : GameRules<State, C4Action> {
                         streakMinPlayer = 0
                     }
                 }
-                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+                if (streakMinPlayer == 4) return GameResult.Min
+                if (streakMaxPlayer == 4) return GameResult.Max
             }
         }
-        return false
+        return null
     }
 
-    private fun isTerminalWithVertical(state: State): Boolean {
+    private fun isTerminalWithVertical(state: State): GameResult? {
         for (y in 0..6) {
             for (x in 0..2) {
                 var streakMinPlayer = 0
@@ -78,13 +87,14 @@ class ConnectFourRules : GameRules<State, C4Action> {
                         streakMinPlayer = 0
                     }
                 }
-                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+                if (streakMinPlayer == 4) return GameResult.Min
+                if (streakMaxPlayer == 4) return GameResult.Max
             }
         }
-        return false
+        return null
     }
 
-    private fun isTerminalWithNegativeSlopeDiagonal(state: State): Boolean {
+    private fun isTerminalWithNegativeSlopeDiagonal(state: State): GameResult? {
         for (x in 0..2) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -99,13 +109,14 @@ class ConnectFourRules : GameRules<State, C4Action> {
                         streakMinPlayer = 0
                     }
                 }
-                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+                if (streakMinPlayer == 4) return GameResult.Min
+                if (streakMaxPlayer == 4) return GameResult.Max
             }
         }
-        return false
+        return null
     }
 
-    private fun isTerminalWithPositiveSlopeDiagonal(state: State): Boolean {
+    private fun isTerminalWithPositiveSlopeDiagonal(state: State): GameResult? {
         for (x in 3..5) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -120,10 +131,11 @@ class ConnectFourRules : GameRules<State, C4Action> {
                         streakMinPlayer = 0
                     }
                 }
-                if (streakMinPlayer == 4 || streakMaxPlayer == 4) return true
+                if (streakMinPlayer == 4) return GameResult.Min
+                if (streakMaxPlayer == 4) return GameResult.Max
             }
         }
-        return false
+        return null
     }
 
     override fun possibleActions(state: State): Array<C4Action> {
@@ -167,13 +179,12 @@ class ConnectFourRules : GameRules<State, C4Action> {
     override fun valueOf(state: State): Int {
         val nextPlayer = nextPlayer(state)
 
-        val isNotDraw = isTerminalWithHorizontal(state)
-                || isTerminalWithVertical(state)
-                || isTerminalWithNegativeSlopeDiagonal(state)
-                || isTerminalWithPositiveSlopeDiagonal(state)
+        val isOverButNotDraw = with(getGameResult(state)) {
+            this != null && this != GameResult.Draw
+        }
         return when (nextPlayer) {
             Player.Max -> {
-                if (isNotDraw) {
+                if (isOverButNotDraw) {
                     //Min won the previous Turn
                     Int.MIN_VALUE
                 } else {
@@ -182,7 +193,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
             }
 
             Player.Min -> {
-                if (isNotDraw) {
+                if (isOverButNotDraw) {
                     //Max won the previous turn
                     Int.MAX_VALUE
                 } else {

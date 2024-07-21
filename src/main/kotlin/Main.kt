@@ -26,6 +26,14 @@ fun extractInputC4(input: String): C4Action {
     return input.trim().toInt()
 }
 
+fun printWinner(result: GameResult) {
+    when(result) {
+        GameResult.Draw -> println("The game ended in a DRAW")
+        GameResult.Max -> println("MAX player won")
+        GameResult.Min -> println("MIN player won")
+    }
+}
+
 fun main() {
     val initialState = arrayOf(
         arrayOf(" ", " ", " ", " ", " ", " ", " "),
@@ -35,11 +43,11 @@ fun main() {
         arrayOf(" ", " ", " ", " ", " ", " ", " "),
         arrayOf(" ", " ", " ", " ", " ", " ", " ")
     )
-    val difficulty = 0.7
+    val difficulty = 0.4
 
-    val game = Game(initialState, 3, ConnectFourRules())
+    val game = Game(initialState, 1, ConnectFourRules())
 
-    while (!game.isOver) {
+    while (game.result == null) {
         game.printState()
         when(game.nextPlayer) {
             Player.Min -> {
@@ -64,4 +72,5 @@ fun main() {
         }
     }
     game.printState()
+    printWinner(game.result!!)
 }

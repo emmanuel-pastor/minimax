@@ -1,4 +1,5 @@
 import com.emmanuel.pastor.simplesmartapps.ConnectFourRules
+import com.emmanuel.pastor.simplesmartapps.GameResult
 import com.emmanuel.pastor.simplesmartapps.Player
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
@@ -162,9 +163,9 @@ class ConnectFourRulesTest {
     }
 
     @Nested
-    inner class IsTerminalTests {
+    inner class GameResultTests {
         @Test
-        fun `return false given empty grid state`() {
+        fun `return null given empty grid state`() {
             val initialState = arrayOf(
                 arrayOf("", "", "", "", "", "", ""),
                 arrayOf("", "", "", "", "", "", ""),
@@ -174,29 +175,29 @@ class ConnectFourRulesTest {
                 arrayOf("", "", "", "", "", "", "")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(isTerminal, false)
+            assertEquals(gameResult, null)
         }
 
         @Test
-        fun `return true given full grid state with a draw`() {
+        fun `return Draw given full grid state with a draw`() {
             val initialState = arrayOf(
-                arrayOf("O", "X", "O", "X", "O", "X", "O"),
-                arrayOf("X", "O", "O", "O", "X", "O", "X"),
                 arrayOf("O", "X", "X", "X", "O", "X", "O"),
-                arrayOf("X", "O", "O", "X", "O", "O", "X"),
+                arrayOf("X", "O", "O", "O", "X", "O", "X"),
+                arrayOf("O", "X", "X", "O", "X", "X", "O"),
+                arrayOf("X", "X", "O", "X", "O", "O", "O"),
                 arrayOf("O", "X", "O", "X", "X", "X", "O"),
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Draw, gameResult)
         }
 
         @Test
-        fun `return true given Max won with a line before full grid`() {
+        fun `return Max given Max won with a line before full grid`() {
             val initialState = arrayOf(
                 arrayOf("O", "O", "", "X", "X", "X", "X"),
                 arrayOf("X", "O", "O", "O", "X", "O", "O"),
@@ -206,13 +207,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Max, gameResult)
         }
 
         @Test
-        fun `return true given Min won with a line before full grid`() {
+        fun `return Min given Min won with a line before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", "X", "", "O", "O", "O", "O"),
                 arrayOf("X", "O", "O", "O", "X", "O", "O"),
@@ -222,13 +223,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Min, gameResult)
         }
 
         @Test
-        fun `return true given Max won with a column before full grid`() {
+        fun `return Max given Max won with a column before full grid`() {
             val initialState = arrayOf(
                 arrayOf("O", "", "O", "X", "X", "X", "O"),
                 arrayOf("O", "X", "O", "X", "O", "O", "O"),
@@ -238,13 +239,13 @@ class ConnectFourRulesTest {
                 arrayOf("O", "X", "O", "X", "O", "X", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Max, gameResult)
         }
 
         @Test
-        fun `return true given Min won with a column before full grid`() {
+        fun `return Min given Min won with a column before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", "", "O", "O", "X", "X", "X"),
                 arrayOf("O", "X", "X", "X", "O", "O", "X"),
@@ -254,13 +255,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Min, gameResult)
         }
 
         @Test
-        fun `return true given Min won with a top left to bottom right diagonal before full grid`() {
+        fun `return Min given Min won with a top left to bottom right diagonal before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", "", "O", "O", "X", "X", "X"),
                 arrayOf("O", "X", "X", "X", "O", "O", "X"),
@@ -270,13 +271,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Min, gameResult)
         }
 
         @Test
-        fun `return true given Max won with a top left to bottom right diagonal before full grid`() {
+        fun `return Max given Max won with a top left to bottom right diagonal before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", " ", " ", "O", "X", "X", "X"),
                 arrayOf("O", "X", "X", "X", "O", "O", "X"),
@@ -286,13 +287,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "O", "X", "X", "X", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Max, gameResult)
         }
 
         @Test
-        fun `return true given Min won with a top right to bottom left diagonal before full grid`() {
+        fun `return Min given Min won with a top right to bottom left diagonal before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", " ", "O", "O", "X", "X", "O"),
                 arrayOf("O", "X", "X", "X", "O", "O", "X"),
@@ -302,13 +303,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Min, gameResult)
         }
 
         @Test
-        fun `return true given Max won with a top right to bottom left diagonal before full grid`() {
+        fun `return Max given Max won with a top right to bottom left diagonal before full grid`() {
             val initialState = arrayOf(
                 arrayOf("X", " ", " ", "O", "X", "X", "O"),
                 arrayOf("O", "X", "X", "X", "O", "O", "O"),
@@ -318,13 +319,13 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "O", "X", "X", "O", "O")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(true, isTerminal)
+            assertEquals(GameResult.Max, gameResult)
         }
 
         @Test
-        fun `return false given no player won yet`() {
+        fun `return null given no player won yet`() {
             val initialState = arrayOf(
                 arrayOf("O", "O", "", "", "X", "X", "O"),
                 arrayOf("X", "O", "O", "O", "X", "O", "X"),
@@ -334,9 +335,9 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "O", "O", "X")
             )
 
-            val isTerminal = rules.isTerminal(initialState)
+            val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(false, isTerminal)
+            assertEquals(null, gameResult)
         }
     }
 
@@ -399,6 +400,7 @@ class ConnectFourRulesTest {
             assert(nextState.contentDeepEquals(expectedState))
         }
 
+        @Test
         fun `return the right state given a normal initial state and action and playing with Max`() {
             val initialState = arrayOf(
                 arrayOf(" ", " ", " ", " ", " ", " ", " "),
