@@ -1,8 +1,7 @@
 import com.emmanuel.pastor.simplesmartapps.Player
 import com.emmanuel.pastor.simplesmartapps.TicTacToeRules
 import com.emmanuel.pastor.simplesmartapps.minimax
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -259,6 +258,23 @@ class TicTacToeRulesTest {
                 arrayOf("O", "X", "")
             )
             assert(nextState.contentDeepEquals(expectedState))
+        }
+
+        @Test
+        fun `check that a deep copy is done`() {
+            val initialState = arrayOf(
+                arrayOf("O", "X", ""),
+                arrayOf("X", "O", ""),
+                arrayOf("O", "", "")
+            )
+
+
+            val nextState = rules.nextState(initialState, (2 to 1))
+
+            assertNotEquals(nextState.toString(), initialState.toString())
+            for ((x, line) in initialState.withIndex()) {
+                assertNotEquals(nextState[x].toString(), line.toString())
+            }
         }
     }
 

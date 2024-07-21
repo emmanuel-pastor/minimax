@@ -142,6 +142,23 @@ class ConnectFourRulesTest {
             val expectedActions = arrayOf(0, 1, 2, 3, 4, 5, 6)
             assert(actions.contentEquals(expectedActions))
         }
+
+        @Test
+        fun `return all possible solutions when given a grid state with partially filled columns`() {
+            val initialState = arrayOf(
+                arrayOf("X", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "X", "X", " ", " ", " ", " "),
+                arrayOf("X", "O", "X", "O", " ", " ", " "),
+                arrayOf("O", "O", "O", "O", "X", "O", "X"),
+                arrayOf("X", "O", "X", "O", "X", "O", "X"),
+                arrayOf("O", "O", "X", "O", "X", "O", "X")
+            )
+
+            val actions = rules.possibleActions(initialState)
+
+            val expectedActions = arrayOf(2, 3, 4, 5, 6)
+            assert(actions.contentEquals(expectedActions))
+        }
     }
 
     @Nested
@@ -404,6 +421,26 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "", " ", " ", " ", " ")
             )
             assert(nextState.contentDeepEquals(expectedState))
+        }
+
+        @Test
+        fun `check that a deep copy is done`() {
+            val initialState = arrayOf(
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", " ", " ", " ", " ", " ", " "),
+                arrayOf(" ", "O", " ", " ", " ", " ", " "),
+                arrayOf("X", "O", "", " ", " ", " ", " ")
+            )
+
+
+            val nextState = rules.nextState(initialState, (0))
+
+            assertNotEquals(nextState.toString(), initialState.toString())
+            for((x,line) in initialState.withIndex()) {
+                assertNotEquals(nextState[x].toString(), line.toString())
+            }
         }
     }
 

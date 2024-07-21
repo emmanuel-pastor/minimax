@@ -1,8 +1,8 @@
 package com.emmanuel.pastor.simplesmartapps
 
-typealias CFAction = Int
+typealias C4Action = Int
 
-class ConnectFourRules : GameRules<State, CFAction> {
+class ConnectFourRules : GameRules<State, C4Action> {
     private fun Player.symbol(): String = when (this) {
         Player.Max -> "X"
         Player.Min -> "O"
@@ -126,27 +126,22 @@ class ConnectFourRules : GameRules<State, CFAction> {
         return false
     }
 
-    override fun possibleActions(state: State): Array<CFAction> {
-        val actions = mutableListOf<CFAction>()
+    override fun possibleActions(state: State): Array<C4Action> {
+        val actions = mutableListOf<C4Action>()
 
-        var x = 0
-        while (actions.size != 7 && x < state.size) {
-            val line = state[x]
-            for (y in line.indices) {
-                if (line[y].isBlank()) {
+        for (y in 0..6) {
+            for (x in 5 downTo 0) {
+                if (state[x][y].isBlank()) {
                     actions.add(y)
+                    break
                 }
-
-                if (actions.size == 7) break
             }
-
-            x++
         }
 
         return actions.toTypedArray()
     }
 
-    override fun nextState(state: State, action: CFAction): State {
+    override fun nextState(state: State, action: C4Action): State {
         require(action in 0..6) {
             "The column number $action is out of the grid. Valid column numbers is included in [0,6]."
         }
@@ -154,10 +149,14 @@ class ConnectFourRules : GameRules<State, CFAction> {
             "Column $action is full. You cannot add any token in this column."
         }
 
-        val nextState = state.copyOf()
-        for (line in nextState.reversed()) {
-            if (line[action].isBlank()) {
-                line[action] = nextPlayer(state).symbol()
+        val nextState = Array(state.size) { x ->
+            Array(state[x].size) { y ->
+                state[x][y]
+            }
+        }
+        for (x in 5 downTo 0) {
+            if (nextState[x][action].isBlank()) {
+                nextState[x][action] = nextPlayer(state).symbol()
                 break
             }
         }
@@ -203,20 +202,16 @@ class ConnectFourRules : GameRules<State, CFAction> {
         }
         val centerCount = centerArray.count { it == nextPlayerSymbol }
         score += centerCount * 6
-        println("central ${nextPlayer}: $score")
 
         //Score horizontal
-        var prevScore = score
         for (row in state) {
             for (y in 0..3) {
                 val window = row.sliceArray(y..y + 3)
                 score += evaluateWindow(window, nextPlayer)
             }
         }
-        println("horizontal ${nextPlayer}: ${score - prevScore}")
 
         //Score vertical
-        prevScore = score
         for (y in 0..6) {
             val column = Array(state.size) { x ->
                 state[x][y]
@@ -226,10 +221,8 @@ class ConnectFourRules : GameRules<State, CFAction> {
                 score += evaluateWindow(window, nextPlayer)
             }
         }
-        println("vertical ${nextPlayer}: ${score - prevScore}")
 
         //Score positive slope diagonal
-        prevScore = score
         for (x in 0..2) {
             for (y in 0..3) {
                 val window = Array(4) { i ->
@@ -238,10 +231,8 @@ class ConnectFourRules : GameRules<State, CFAction> {
                 score += evaluateWindow(window, nextPlayer)
             }
         }
-        println("positive slope ${nextPlayer}: ${score - prevScore}")
 
         //Score negative slope diagonal
-        prevScore = score
         for (x in 3..5) {
             for (y in 0..3) {
                 val window = Array(4) { i ->
@@ -250,8 +241,6 @@ class ConnectFourRules : GameRules<State, CFAction> {
                 score += evaluateWindow(window, nextPlayer)
             }
         }
-        println("negative slope ${nextPlayer}: ${score - prevScore}")
-        println("total $nextPlayer: $score")
 
         return score
     }
