@@ -19,7 +19,7 @@ fun extractNumbersT3(input: String): T3Action {
 }
 
 fun isInputValidC4(input: String): Boolean {
-    return input.trim().toInt() in 0..6
+    return input.trim().toIntOrNull() in 0..6
 }
 
 fun extractInputC4(input: String): C4Action {
