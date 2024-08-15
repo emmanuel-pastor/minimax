@@ -22,7 +22,7 @@ class TicTacToeRulesTest {
 
             val nextPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nextPlayer, Player.Min)
+            assertEquals(Player.Min, nextPlayer)
         }
 
         @Test
@@ -35,7 +35,7 @@ class TicTacToeRulesTest {
 
             val nexPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nexPlayer, Player.Max)
+            assertEquals(Player.Max, nexPlayer)
         }
 
         @Test
@@ -48,7 +48,7 @@ class TicTacToeRulesTest {
 
             val nexPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nexPlayer, Player.Min)
+            assertEquals(Player.Min, nexPlayer)
         }
 
         @Test
@@ -77,7 +77,7 @@ class TicTacToeRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, null)
+            assertEquals(null, gameResult)
         }
 
         @Test
@@ -90,7 +90,7 @@ class TicTacToeRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, GameResult.Draw)
+            assertEquals(GameResult.Draw, gameResult)
         }
 
         @Test
@@ -103,7 +103,7 @@ class TicTacToeRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, GameResult.Min)
+            assertEquals(GameResult.Min, gameResult)
         }
 
         @Test
@@ -116,7 +116,7 @@ class TicTacToeRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, GameResult.Max)
+            assertEquals(GameResult.Max, gameResult)
         }
 
         @Test
@@ -129,7 +129,7 @@ class TicTacToeRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, GameResult.Max)
+            assertEquals(GameResult.Max, gameResult)
         }
     }
 
@@ -272,9 +272,9 @@ class TicTacToeRulesTest {
 
             val nextState = rules.nextState(initialState, (2 to 1))
 
-            assertNotEquals(nextState.toString(), initialState.toString())
+            assertNotEquals(initialState.toString(), nextState.toString())
             for ((x, line) in initialState.withIndex()) {
-                assertNotEquals(nextState[x].toString(), line.toString())
+                assertNotEquals(line.toString(), nextState[x].toString())
             }
         }
     }
@@ -304,7 +304,7 @@ class TicTacToeRulesTest {
 
             val value = rules.valueOf(initialState)
 
-            assertEquals(value, 1)
+            assertEquals(1, value)
         }
 
         @Test
@@ -317,7 +317,7 @@ class TicTacToeRulesTest {
 
             val value = rules.valueOf(initialState)
 
-            assertEquals(value, -1)
+            assertEquals(-1, value)
         }
 
         @Test
@@ -330,7 +330,7 @@ class TicTacToeRulesTest {
 
             val value = rules.valueOf(initialState)
 
-            assertEquals(value, 0)
+            assertEquals(0, value)
         }
     }
 

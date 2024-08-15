@@ -23,7 +23,7 @@ class ConnectFourRulesTest {
 
             val nextPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nextPlayer, Player.Min)
+            assertEquals(Player.Min, nextPlayer)
         }
 
         @Test
@@ -39,7 +39,7 @@ class ConnectFourRulesTest {
 
             val nexPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nexPlayer, Player.Max)
+            assertEquals(Player.Max, nexPlayer)
         }
 
         @Test
@@ -55,7 +55,7 @@ class ConnectFourRulesTest {
 
             val nexPlayer = rules.nextPlayer(initialState)
 
-            assertEquals(nexPlayer, Player.Min)
+            assertEquals(Player.Min, nexPlayer)
         }
 
         @Test
@@ -177,7 +177,7 @@ class ConnectFourRulesTest {
 
             val gameResult = rules.getGameResult(initialState)
 
-            assertEquals(gameResult, null)
+            assertEquals(null, gameResult)
         }
 
         @Test
@@ -439,9 +439,9 @@ class ConnectFourRulesTest {
 
             val nextState = rules.nextState(initialState, (0))
 
-            assertNotEquals(nextState.toString(), initialState.toString())
+            assertNotEquals(initialState.toString(), nextState.toString())
             for((x,line) in initialState.withIndex()) {
-                assertNotEquals(nextState[x].toString(), line.toString())
+                assertNotEquals(line.toString(), nextState[x].toString())
             }
         }
     }
@@ -461,7 +461,7 @@ class ConnectFourRulesTest {
 
             val value = rules.valueOf(initialState)
 
-            assertEquals(value, Int.MAX_VALUE)
+            assertEquals(Int.MAX_VALUE, value)
         }
 
         @Test
@@ -477,7 +477,7 @@ class ConnectFourRulesTest {
 
             val value = rules.valueOf(initialState)
 
-            assertEquals(value, Int.MIN_VALUE)
+            assertEquals(Int.MIN_VALUE, value)
         }
 
         @Test
