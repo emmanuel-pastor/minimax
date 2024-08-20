@@ -51,13 +51,13 @@ fun printC4State(state: State) {
 }
 
 fun main() {
-    val initialState = arrayOf(
-        arrayOf(" ", " ", " ", " ", " ", " ", " "),
-        arrayOf(" ", " ", " ", " ", " ", " ", " "),
-        arrayOf(" ", " ", " ", " ", " ", " ", " "),
-        arrayOf(" ", " ", " ", " ", " ", " ", " "),
-        arrayOf(" ", " ", " ", " ", " ", " ", " "),
-        arrayOf(" ", " ", " ", " ", " ", " ", " ")
+    val initialState: State = arrayOf(
+        arrayOf(null, null, null, null, null, null, null),
+        arrayOf(null, null, null, null, null, null, null),
+        arrayOf(null, null, null, null, null, null, null),
+        arrayOf(null, null, null, null, null, null, null),
+        arrayOf(null, null, null, null, null, null, null),
+        arrayOf(null, null, null, null, null, null, null)
     )
     val difficulty = 0.4
 

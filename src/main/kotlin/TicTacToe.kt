@@ -1,6 +1,6 @@
 package com.emmanuel.pastor.simplesmartapps
 
-typealias State = Array<Array<String>>
+typealias State = Array<Array<Player?>>
 typealias T3Action = Pair<Int, Int>
 
 class TicTacToeRules : GameRules<State, T3Action> {
@@ -15,15 +15,10 @@ class TicTacToeRules : GameRules<State, T3Action> {
         arrayOf(0 to 2, 1 to 1, 2 to 0) //diagonal top-right to bottom-left
     )
 
-    private fun Player.symbol(): String = when (this) {
-        Player.Max -> "X"
-        Player.Min -> "O"
-    }
-
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
-            row.count { cell ->
-                cell.isNotBlank()
+            row.count { cell: Player? ->
+                cell != null
             }
         }
 
@@ -43,9 +38,9 @@ class TicTacToeRules : GameRules<State, T3Action> {
             var minCounter = 0
             var maxCounter = 0
             terminalState.forEach { (row, column) ->
-                if (state[row][column] == Player.Min.symbol()) {
+                if (state[row][column] == Player.Min) {
                     minCounter++
-                } else if (state[row][column] == Player.Max.symbol()) {
+                } else if (state[row][column] == Player.Max) {
                     maxCounter++
                 }
             }
@@ -55,8 +50,8 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }
 
         val turnsPlayed = state.sumOf { row ->
-            row.count { cell ->
-                cell.isNotBlank()
+            row.count { cell: Player? ->
+                cell != null
             }
         }
 
@@ -67,7 +62,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         val actions = mutableListOf<T3Action>()
         state.forEachIndexed { x, row ->
             row.forEachIndexed { y, cell ->
-                if (cell.isBlank()) {
+                if (cell == null) {
                     actions.add(x to y)
                 }
             }
@@ -81,7 +76,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         require(row in 0..2 && column in 0..2) {
             "Coordinates ($row, $column) are out of the grid"
         }
-        require(state[row][column].isBlank()) {
+        require(state[row][column] == null) {
             "Cannot perform this action. The cell ($row, $column) is not empty."
         }
 
@@ -89,7 +84,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
             Array(state[x].size) { y ->
                 state[x][y]
             }
-        }.also { it[row][column] = nextPlayer(state).symbol() }
+        }.also { it[row][column] = nextPlayer(state) }
     }
 
     override fun valueOf(state: State): Int {
@@ -97,9 +92,9 @@ class TicTacToeRules : GameRules<State, T3Action> {
             var minCounter = 0
             var maxCounter = 0
             terminalState.forEach { (row, column) ->
-                if (state[row][column] == Player.Min.symbol()) {
+                if (state[row][column] == Player.Min) {
                     minCounter++
-                } else if (state[row][column] == Player.Max.symbol()) {
+                } else if (state[row][column] == Player.Max) {
                     maxCounter++
                 }
             }
@@ -109,8 +104,8 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }
 
         val turnsPlayed = state.sumOf { row ->
-            row.count { cell ->
-                cell.isNotBlank()
+            row.count { cell: Player? ->
+                cell != null
             }
         }
 

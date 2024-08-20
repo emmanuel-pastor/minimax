@@ -3,15 +3,10 @@ package com.emmanuel.pastor.simplesmartapps
 typealias C4Action = Int
 
 class ConnectFourRules : GameRules<State, C4Action> {
-    private fun Player.symbol(): String = when (this) {
-        Player.Max -> "X"
-        Player.Min -> "O"
-    }
-
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
-            row.count { cell ->
-                cell.isNotBlank()
+            row.count { cell: Player? ->
+                cell != null
             }
         }
 
@@ -44,8 +39,8 @@ class ConnectFourRules : GameRules<State, C4Action> {
 
     private fun isTerminalWithFullGrid(state: State): GameResult? {
         return if (state.sumOf { line ->
-                line.count { value ->
-                    value.isBlank()
+                line.count { cell: Player? ->
+                    cell == null
                 }
             } == 0) GameResult.Draw else null
     }
@@ -57,10 +52,10 @@ class ConnectFourRules : GameRules<State, C4Action> {
                 var streakMaxPlayer = 0
                 for (i in 0..3) {
                     val cell = state[x][y + i]
-                    if (cell == Player.Min.symbol()) {
+                    if (cell == Player.Min) {
                         streakMinPlayer++
                         streakMaxPlayer = 0
-                    } else if (cell == Player.Max.symbol()) {
+                    } else if (cell == Player.Max) {
                         streakMaxPlayer++
                         streakMinPlayer = 0
                     }
@@ -79,10 +74,10 @@ class ConnectFourRules : GameRules<State, C4Action> {
                 var streakMaxPlayer = 0
                 for (i in 0..3) {
                     val cell = state[x + i][y]
-                    if (cell == Player.Min.symbol()) {
+                    if (cell == Player.Min) {
                         streakMinPlayer++
                         streakMaxPlayer = 0
-                    } else if (cell == Player.Max.symbol()) {
+                    } else if (cell == Player.Max) {
                         streakMaxPlayer++
                         streakMinPlayer = 0
                     }
@@ -101,10 +96,10 @@ class ConnectFourRules : GameRules<State, C4Action> {
                 var streakMaxPlayer = 0
                 for (i in 0..3) {
                     val cell = state[x + i][y + i]
-                    if (cell == Player.Min.symbol()) {
+                    if (cell == Player.Min) {
                         streakMinPlayer++
                         streakMaxPlayer = 0
-                    } else if (cell == Player.Max.symbol()) {
+                    } else if (cell == Player.Max) {
                         streakMaxPlayer++
                         streakMinPlayer = 0
                     }
@@ -123,10 +118,10 @@ class ConnectFourRules : GameRules<State, C4Action> {
                 var streakMaxPlayer = 0
                 for (i in 0..3) {
                     val cell = state[x - i][y + i]
-                    if (cell == Player.Min.symbol()) {
+                    if (cell == Player.Min) {
                         streakMinPlayer++
                         streakMaxPlayer = 0
-                    } else if (cell == Player.Max.symbol()) {
+                    } else if (cell == Player.Max) {
                         streakMaxPlayer++
                         streakMinPlayer = 0
                     }
@@ -143,7 +138,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
 
         for (y in 0..6) {
             for (x in 5 downTo 0) {
-                if (state[x][y].isBlank()) {
+                if (state[x][y] == null) {
                     actions.add(y)
                     break
                 }
@@ -157,7 +152,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         require(action in 0..6) {
             "The column number $action is out of the grid. Valid column numbers is included in [0,6]."
         }
-        require(state.first()[action].isBlank()) {
+        require(state.first()[action] == null) {
             "Column $action is full. You cannot add any token in this column."
         }
 
@@ -167,8 +162,8 @@ class ConnectFourRules : GameRules<State, C4Action> {
             }
         }
         for (x in 5 downTo 0) {
-            if (nextState[x][action].isBlank()) {
-                nextState[x][action] = nextPlayer(state).symbol()
+            if (nextState[x][action] == null) {
+                nextState[x][action] = nextPlayer(state)
                 break
             }
         }
@@ -204,14 +199,13 @@ class ConnectFourRules : GameRules<State, C4Action> {
     }
 
     private fun scorePosition(state: State, nextPlayer: Player): Int {
-        val nextPlayerSymbol = nextPlayer.symbol()
         var score = 0
 
         //Score center column
         val centerArray = Array(state.size) { x ->
             state[x][3]
         }
-        val centerCount = centerArray.count { it == nextPlayerSymbol }
+        val centerCount = centerArray.count { it == nextPlayer }
         score += centerCount * 6
 
         //Score horizontal
@@ -256,29 +250,28 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return score
     }
 
-    private fun evaluateWindow(window: Array<String>, nextPlayer: Player): Int {
+    private fun evaluateWindow(window: Array<Player?>, nextPlayer: Player): Int {
         var score = 0
-        val playerSymbol = nextPlayer.symbol()
-        val opponentSymbol = when (nextPlayer) {
-            Player.Max -> Player.Min.symbol()
-            Player.Min -> Player.Max.symbol()
+        val opponent = when (nextPlayer) {
+            Player.Max -> Player.Min
+            Player.Min -> Player.Max
         }
 
         when {
-            window.count { it == playerSymbol } == 4 -> {
+            window.count { it == nextPlayer } == 4 -> {
                 score += 100
             }
 
-            window.count { it == playerSymbol } == 3 && window.count { it.isBlank() } == 1 -> {
+            window.count { it == nextPlayer } == 3 && window.count { it == null } == 1 -> {
                 score += 10
             }
 
-            window.count { it == playerSymbol } == 2 && window.count { it.isBlank() } == 2 -> {
+            window.count { it == nextPlayer } == 2 && window.count { it == null } == 2 -> {
                 score += 5
             }
         }
 
-        if (window.count { it == opponentSymbol } == 3 && window.count { it.isBlank() } == 1) {
+        if (window.count { it == opponent } == 3 && window.count { it == null } == 1) {
             score -= 80
         }
 
