@@ -3,6 +3,11 @@ package com.emmanuel.pastor.simplesmartapps
 typealias C4Action = Int
 
 class ConnectFourRules : GameRules<State, C4Action> {
+    private companion object {
+        const val COLUMNS_COUNT = 7
+        const val ROWS_COUNT = 6
+    }
+
     override fun nextPlayer(state: State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell: Player? ->
@@ -10,7 +15,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
             }
         }
 
-        require(turnsPlayed <= 41) {
+        require(turnsPlayed < COLUMNS_COUNT * ROWS_COUNT) {
             "The grid is full. Cannot determine the next player."
         }
 
@@ -46,7 +51,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
     }
 
     private fun isTerminalWithHorizontal(state: State): GameResult? {
-        for (x in 0..5) {
+        for (x in 0 until ROWS_COUNT) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
                 var streakMaxPlayer = 0
@@ -68,7 +73,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
     }
 
     private fun isTerminalWithVertical(state: State): GameResult? {
-        for (y in 0..6) {
+        for (y in 0 until COLUMNS_COUNT) {
             for (x in 0..2) {
                 var streakMinPlayer = 0
                 var streakMaxPlayer = 0
@@ -112,7 +117,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
     }
 
     private fun isTerminalWithPositiveSlopeDiagonal(state: State): GameResult? {
-        for (x in 3..5) {
+        for (x in 3 until ROWS_COUNT) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
                 var streakMaxPlayer = 0
@@ -136,8 +141,8 @@ class ConnectFourRules : GameRules<State, C4Action> {
     override fun possibleActions(state: State): Array<C4Action> {
         val actions = mutableListOf<C4Action>()
 
-        for (y in 0..6) {
-            for (x in 5 downTo 0) {
+        for (y in 0 until COLUMNS_COUNT) {
+            for (x in (ROWS_COUNT - 1) downTo 0) {
                 if (state[x][y] == null) {
                     actions.add(y)
                     break
@@ -149,7 +154,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
     }
 
     override fun nextState(state: State, action: C4Action): State {
-        require(action in 0..6) {
+        require(action in 0 until COLUMNS_COUNT) {
             "The column number $action is out of the grid. Valid column numbers is included in [0,6]."
         }
         require(state.first()[action] == null) {
@@ -161,7 +166,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
                 state[x][y]
             }
         }
-        for (x in 5 downTo 0) {
+        for (x in (ROWS_COUNT - 1) downTo 0) {
             if (nextState[x][action] == null) {
                 nextState[x][action] = nextPlayer(state)
                 break
@@ -217,7 +222,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
 
         //Score vertical
-        for (y in 0..6) {
+        for (y in 0 until ROWS_COUNT) {
             val column = Array(state.size) { x ->
                 state[x][y]
             }
@@ -238,7 +243,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
 
         //Score negative slope diagonal
-        for (x in 3..5) {
+        for (x in 3 until ROWS_COUNT) {
             for (y in 0..3) {
                 val window = Array(4) { i ->
                     state[x - i][y + i]

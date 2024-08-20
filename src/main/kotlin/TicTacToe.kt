@@ -4,6 +4,11 @@ typealias State = Array<Array<Player?>>
 typealias T3Action = Pair<Int, Int>
 
 class TicTacToeRules : GameRules<State, T3Action> {
+    private companion object {
+        const val ROWS_COUNT = 3
+        const val COLUMNS_COUNT = 3
+    }
+
     private val terminalStates = arrayOf(
         arrayOf(0 to 0, 0 to 1, 0 to 2), //first row
         arrayOf(1 to 0, 1 to 1, 1 to 2), //second row
@@ -55,7 +60,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
             }
         }
 
-        return if (turnsPlayed > 8) GameResult.Draw else null
+        return if (turnsPlayed > COLUMNS_COUNT * ROWS_COUNT - 1) GameResult.Draw else null
     }
 
     override fun possibleActions(state: State): Array<T3Action> {
@@ -73,7 +78,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
 
     override fun nextState(state: State, action: T3Action): State {
         val (row, column) = action
-        require(row in 0..2 && column in 0..2) {
+        require(row in 0 until ROWS_COUNT && column in 0 until COLUMNS_COUNT) {
             "Coordinates ($row, $column) are out of the grid"
         }
         require(state[row][column] == null) {
@@ -109,7 +114,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
             }
         }
 
-        return if (turnsPlayed == 9) 0 else throw IllegalArgumentException("Cannot determine the value of a non terminal state.")
+        return if (turnsPlayed == ROWS_COUNT * COLUMNS_COUNT) 0 else throw IllegalArgumentException("Cannot determine the value of a non terminal state.")
     }
 }
 
