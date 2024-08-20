@@ -38,7 +38,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }
     }
 
-    override fun getGameResult(state: State): GameResult? {
+    override fun gameResult(state: State): GameResult? {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -60,7 +60,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
             }
         }
 
-        return if(turnsPlayed > 8) GameResult.Draw else null
+        return if (turnsPlayed > 8) GameResult.Draw else null
     }
 
     override fun possibleActions(state: State): Array<T3Action> {
@@ -116,12 +116,5 @@ class TicTacToeRules : GameRules<State, T3Action> {
 
         return if (turnsPlayed == 9) 0 else throw IllegalArgumentException("Cannot determine the value of a non terminal state.")
     }
-
-    override fun printState(state: State) {
-        println("   0  1  2")
-        state.forEachIndexed { index, line ->
-            println("$index ${line.contentToString()}")
-        }
-        println()
-    }
 }
+

@@ -27,11 +27,27 @@ fun extractInputC4(input: String): C4Action {
 }
 
 fun printWinner(result: GameResult) {
-    when(result) {
+    when (result) {
         GameResult.Draw -> println("The game ended in a DRAW")
         GameResult.Max -> println("MAX player won")
         GameResult.Min -> println("MIN player won")
     }
+}
+
+fun printT3State(state: State) {
+    println("   0  1  2")
+    state.forEachIndexed { index, line ->
+        println("$index ${line.contentToString()}")
+    }
+    println()
+}
+
+fun printC4State(state: State) {
+    println("   0  1  2  3  4  5  6")
+    state.forEachIndexed { index, line ->
+        println("$index ${line.contentToString()}")
+    }
+    println()
 }
 
 fun main() {
@@ -48,8 +64,8 @@ fun main() {
     val game = Game(initialState, 1, ConnectFourRules())
 
     while (game.result == null) {
-        game.printState()
-        when(game.nextPlayer) {
+        printC4State(game.state)
+        when (game.nextPlayer) {
             Player.Min -> {
                 val random = Random.nextFloat()
                 if (random < difficulty) {
@@ -60,6 +76,7 @@ fun main() {
                     game.playRandom()
                 }
             }
+
             Player.Max -> {
                 var input: String
                 do {
@@ -71,6 +88,6 @@ fun main() {
             }
         }
     }
-    game.printState()
+    printC4State(game.state)
     printWinner(game.result!!)
 }

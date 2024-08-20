@@ -175,7 +175,7 @@ class ConnectFourRulesTest {
                 arrayOf("", "", "", "", "", "", "")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(null, gameResult)
         }
@@ -191,7 +191,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Draw, gameResult)
         }
@@ -207,7 +207,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }
@@ -223,7 +223,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "X", "O", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Min, gameResult)
         }
@@ -239,7 +239,7 @@ class ConnectFourRulesTest {
                 arrayOf("O", "X", "O", "X", "O", "X", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }
@@ -255,7 +255,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Min, gameResult)
         }
@@ -271,7 +271,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Min, gameResult)
         }
@@ -287,7 +287,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "O", "X", "X", "X", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }
@@ -303,7 +303,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "X", "O", "X", "O", "X", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Min, gameResult)
         }
@@ -319,7 +319,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "O", "X", "X", "O", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }
@@ -335,7 +335,7 @@ class ConnectFourRulesTest {
                 arrayOf("X", "O", "X", "O", "O", "O", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(null, gameResult)
         }

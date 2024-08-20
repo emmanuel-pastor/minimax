@@ -75,7 +75,7 @@ class TicTacToeRulesTest {
                 arrayOf("", "", "")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(null, gameResult)
         }
@@ -88,7 +88,7 @@ class TicTacToeRulesTest {
                 arrayOf("X", "O", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Draw, gameResult)
         }
@@ -101,7 +101,7 @@ class TicTacToeRulesTest {
                 arrayOf("O", "X", "X")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Min, gameResult)
         }
@@ -114,7 +114,7 @@ class TicTacToeRulesTest {
                 arrayOf("O", "", "")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }
@@ -127,7 +127,7 @@ class TicTacToeRulesTest {
                 arrayOf("O", "X", "O")
             )
 
-            val gameResult = rules.getGameResult(initialState)
+            val gameResult = rules.gameResult(initialState)
 
             assertEquals(GameResult.Max, gameResult)
         }

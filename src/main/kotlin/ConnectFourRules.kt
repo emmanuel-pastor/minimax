@@ -26,7 +26,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
     }
 
-    override fun getGameResult(state: State): GameResult? {
+    override fun gameResult(state: State): GameResult? {
         val horizontalResult = isTerminalWithHorizontal(state)
         if (horizontalResult != null) return horizontalResult
 
@@ -179,7 +179,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
     override fun valueOf(state: State): Int {
         val nextPlayer = nextPlayer(state)
 
-        val isOverButNotDraw = with(getGameResult(state)) {
+        val isOverButNotDraw = with(gameResult(state)) {
             this != null && this != GameResult.Draw
         }
         return when (nextPlayer) {
@@ -283,13 +283,5 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
 
         return score
-    }
-
-    override fun printState(state: State) {
-        println("   0  1  2  3  4  5  6")
-        state.forEachIndexed { index, line ->
-            println("$index ${line.contentToString()}")
-        }
-        println()
     }
 }
