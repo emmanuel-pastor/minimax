@@ -37,7 +37,7 @@ fun printWinner(result: GameResult) {
 fun printT3State(state: State) {
     println("   0  1  2")
     state.forEachIndexed { index, line ->
-        println("$index ${line.contentToString()}")
+        println("$index ${line.map { it?.let { playerToChar(it) } ?: " " }}")
     }
     println()
 }
@@ -45,9 +45,16 @@ fun printT3State(state: State) {
 fun printC4State(state: State) {
     println("   0  1  2  3  4  5  6")
     state.forEachIndexed { index, line ->
-        println("$index ${line.contentToString()}")
+        println("$index ${line.map { it?.let { playerToChar(it) } ?: " " }}")
     }
     println()
+}
+
+fun playerToChar(player: Player): String {
+    return when (player) {
+        Player.Min -> "O"
+        Player.Max -> "X"
+    }
 }
 
 fun main() {
