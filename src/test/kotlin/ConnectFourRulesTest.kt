@@ -1,7 +1,7 @@
-import com.emmanuel.pastor.simplesmartapps.ConnectFourRules
-import com.emmanuel.pastor.simplesmartapps.GameResult
-import com.emmanuel.pastor.simplesmartapps.Player
-import com.emmanuel.pastor.simplesmartapps.State
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
+import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4State
+import com.emmanuel.pastor.simplesmartapps.games.connect_four.ConnectFourRules
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class ConnectFourRulesTest {
     val rules = ConnectFourRules()
 
-    private fun matrixToState(matrix: Array<Array<String>>): State {
+    private fun matrixToState(matrix: Array<Array<String>>): C4State {
         return matrix.map { row ->
             row.map { cell ->
                 when (cell) {

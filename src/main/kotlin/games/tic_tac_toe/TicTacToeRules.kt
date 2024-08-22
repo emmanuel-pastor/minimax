@@ -1,9 +1,13 @@
-package com.emmanuel.pastor.simplesmartapps
+package com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe
 
-typealias State = Array<Array<Player?>>
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameRules
+import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+
+typealias T3State = Array<Array<Player?>>
 typealias T3Action = Pair<Int, Int>
 
-class TicTacToeRules : GameRules<State, T3Action> {
+class TicTacToeRules : GameRules<T3State, T3Action> {
     private companion object {
         const val ROWS_COUNT = 3
         const val COLUMNS_COUNT = 3
@@ -20,7 +24,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         arrayOf(0 to 2, 1 to 1, 2 to 0) //diagonal top-right to bottom-left
     )
 
-    override fun nextPlayer(state: State): Player {
+    override fun nextPlayer(state: T3State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell: Player? ->
                 cell != null
@@ -38,7 +42,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }
     }
 
-    override fun gameResult(state: State): GameResult? {
+    override fun gameResult(state: T3State): GameResult? {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -63,7 +67,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         return if (turnsPlayed > COLUMNS_COUNT * ROWS_COUNT - 1) GameResult.Draw else null
     }
 
-    override fun possibleActions(state: State): Array<T3Action> {
+    override fun possibleActions(state: T3State): Array<T3Action> {
         val actions = mutableListOf<T3Action>()
         state.forEachIndexed { x, row ->
             row.forEachIndexed { y, cell ->
@@ -76,7 +80,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         return actions.toTypedArray()
     }
 
-    override fun nextState(state: State, action: T3Action): State {
+    override fun nextState(state: T3State, action: T3Action): T3State {
         val (row, column) = action
         require(row in 0 until ROWS_COUNT && column in 0 until COLUMNS_COUNT) {
             "Coordinates ($row, $column) are out of the grid"
@@ -92,7 +96,7 @@ class TicTacToeRules : GameRules<State, T3Action> {
         }.also { it[row][column] = nextPlayer(state) }
     }
 
-    override fun valueOf(state: State): Int {
+    override fun valueOf(state: T3State): Int {
         terminalStates.forEach { terminalState ->
             var minCounter = 0
             var maxCounter = 0
@@ -117,4 +121,3 @@ class TicTacToeRules : GameRules<State, T3Action> {
         return if (turnsPlayed == ROWS_COUNT * COLUMNS_COUNT) 0 else throw IllegalArgumentException("Cannot determine the value of a non terminal state.")
     }
 }
-

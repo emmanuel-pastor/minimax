@@ -1,5 +1,13 @@
 package com.emmanuel.pastor.simplesmartapps
 
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
+import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+import com.emmanuel.pastor.simplesmartapps.games.Game
+import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4Action
+import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4State
+import com.emmanuel.pastor.simplesmartapps.games.connect_four.ConnectFourRules
+import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3Action
+import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3State
 import kotlin.random.Random
 
 fun isInputValidT3(input: String): Boolean {
@@ -34,7 +42,7 @@ fun printWinner(result: GameResult) {
     }
 }
 
-fun printT3State(state: State) {
+fun printT3State(state: T3State) {
     println("   0  1  2")
     state.forEachIndexed { index, line ->
         println("$index ${line.map { it?.let { playerToChar(it) } ?: " " }}")
@@ -42,7 +50,7 @@ fun printT3State(state: State) {
     println()
 }
 
-fun printC4State(state: State) {
+fun printC4State(state: C4State) {
     println("   0  1  2  3  4  5  6")
     state.forEachIndexed { index, line ->
         println("$index ${line.map { it?.let { playerToChar(it) } ?: " " }}")
@@ -58,14 +66,9 @@ fun playerToChar(player: Player): String {
 }
 
 fun main() {
-    val initialState: State = arrayOf(
-        arrayOf(null, null, null, null, null, null, null),
-        arrayOf(null, null, null, null, null, null, null),
-        arrayOf(null, null, null, null, null, null, null),
-        arrayOf(null, null, null, null, null, null, null),
-        arrayOf(null, null, null, null, null, null, null),
-        arrayOf(null, null, null, null, null, null, null)
-    )
+    val numberOfColumns = 7
+    val numberOfRows = 6
+    val initialState: C4State = Array(numberOfRows) { Array(numberOfColumns) { null } }
     val difficulty = 0.4
 
     val game = Game(initialState, 1, ConnectFourRules())

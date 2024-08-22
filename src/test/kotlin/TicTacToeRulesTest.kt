@@ -1,4 +1,8 @@
-import com.emmanuel.pastor.simplesmartapps.*
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
+import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+import com.emmanuel.pastor.simplesmartapps.algorithm.minimax
+import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3State
+import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.TicTacToeRules
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -7,7 +11,7 @@ class TicTacToeRulesTest {
 
     val rules = TicTacToeRules()
 
-    private fun matrixToState(matrix: Array<Array<String>>): State {
+    private fun matrixToState(matrix: Array<Array<String>>): T3State {
         return matrix.map { row ->
             row.map { cell ->
                 when (cell) {

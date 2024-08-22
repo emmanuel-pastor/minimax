@@ -1,14 +1,19 @@
-package com.emmanuel.pastor.simplesmartapps
+package com.emmanuel.pastor.simplesmartapps.games.connect_four
 
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
+import com.emmanuel.pastor.simplesmartapps.algorithm.GameRules
+import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+
+typealias C4State = Array<Array<Player?>>
 typealias C4Action = Int
 
-class ConnectFourRules : GameRules<State, C4Action> {
+class ConnectFourRules : GameRules<C4State, C4Action> {
     private companion object {
         const val COLUMNS_COUNT = 7
         const val ROWS_COUNT = 6
     }
 
-    override fun nextPlayer(state: State): Player {
+    override fun nextPlayer(state: C4State): Player {
         val turnsPlayed = state.sumOf { row ->
             row.count { cell: Player? ->
                 cell != null
@@ -26,7 +31,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
     }
 
-    override fun gameResult(state: State): GameResult? {
+    override fun gameResult(state: C4State): GameResult? {
         val horizontalResult = isTerminalWithHorizontal(state)
         if (horizontalResult != null) return horizontalResult
 
@@ -42,7 +47,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return isTerminalWithFullGrid(state)
     }
 
-    private fun isTerminalWithFullGrid(state: State): GameResult? {
+    private fun isTerminalWithFullGrid(state: C4State): GameResult? {
         return if (state.sumOf { line ->
                 line.count { cell: Player? ->
                     cell == null
@@ -50,7 +55,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
             } == 0) GameResult.Draw else null
     }
 
-    private fun isTerminalWithHorizontal(state: State): GameResult? {
+    private fun isTerminalWithHorizontal(state: C4State): GameResult? {
         for (x in 0 until ROWS_COUNT) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -72,7 +77,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return null
     }
 
-    private fun isTerminalWithVertical(state: State): GameResult? {
+    private fun isTerminalWithVertical(state: C4State): GameResult? {
         for (y in 0 until COLUMNS_COUNT) {
             for (x in 0..2) {
                 var streakMinPlayer = 0
@@ -94,7 +99,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return null
     }
 
-    private fun isTerminalWithNegativeSlopeDiagonal(state: State): GameResult? {
+    private fun isTerminalWithNegativeSlopeDiagonal(state: C4State): GameResult? {
         for (x in 0..2) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -116,7 +121,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return null
     }
 
-    private fun isTerminalWithPositiveSlopeDiagonal(state: State): GameResult? {
+    private fun isTerminalWithPositiveSlopeDiagonal(state: C4State): GameResult? {
         for (x in 3 until ROWS_COUNT) {
             for (y in 0..3) {
                 var streakMinPlayer = 0
@@ -138,7 +143,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return null
     }
 
-    override fun possibleActions(state: State): Array<C4Action> {
+    override fun possibleActions(state: C4State): Array<C4Action> {
         val actions = mutableListOf<C4Action>()
 
         for (y in 0 until COLUMNS_COUNT) {
@@ -153,7 +158,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return actions.toTypedArray()
     }
 
-    override fun nextState(state: State, action: C4Action): State {
+    override fun nextState(state: C4State, action: C4Action): C4State {
         require(action in 0 until COLUMNS_COUNT) {
             "The column number $action is out of the grid. Valid column numbers is included in [0,6]."
         }
@@ -176,7 +181,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         return nextState
     }
 
-    override fun valueOf(state: State): Int {
+    override fun valueOf(state: C4State): Int {
         val nextPlayer = nextPlayer(state)
 
         val isOverButNotDraw = with(gameResult(state)) {
@@ -203,7 +208,7 @@ class ConnectFourRules : GameRules<State, C4Action> {
         }
     }
 
-    private fun scorePosition(state: State, nextPlayer: Player): Int {
+    private fun scorePosition(state: C4State, nextPlayer: Player): Int {
         var score = 0
 
         //Score center column
