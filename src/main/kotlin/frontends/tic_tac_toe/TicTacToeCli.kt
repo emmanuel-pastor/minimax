@@ -1,11 +1,11 @@
-package com.emmanuel.pastor.simplesmartapps.frontends.tic_tac_toe
+package frontends.tic_tac_toe
 
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
-import com.emmanuel.pastor.simplesmartapps.games.Game
-import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3Action
-import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3State
-import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.TicTacToeRules
+import algorithm.GameResult
+import algorithm.Player
+import games.Game
+import games.tic_tac_toe.T3Action
+import games.tic_tac_toe.T3State
+import games.tic_tac_toe.TicTacToeRules
 import kotlin.random.Random
 
 private fun isInputValidT3(input: String): Boolean {

@@ -1,7 +1,7 @@
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
-import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4State
-import com.emmanuel.pastor.simplesmartapps.games.connect_four.ConnectFourRules
+import algorithm.GameResult
+import algorithm.Player
+import games.connect_four.C4State
+import games.connect_four.ConnectFourRules
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

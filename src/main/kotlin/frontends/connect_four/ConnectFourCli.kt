@@ -1,11 +1,11 @@
-package com.emmanuel.pastor.simplesmartapps.frontends.connect_four
+package frontends.connect_four
 
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
-import com.emmanuel.pastor.simplesmartapps.games.Game
-import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4Action
-import com.emmanuel.pastor.simplesmartapps.games.connect_four.C4State
-import com.emmanuel.pastor.simplesmartapps.games.connect_four.ConnectFourRules
+import algorithm.GameResult
+import algorithm.Player
+import games.Game
+import games.connect_four.C4Action
+import games.connect_four.C4State
+import games.connect_four.ConnectFourRules
 import kotlin.random.Random
 
 private fun isInputValidC4(input: String): Boolean {

@@ -1,4 +1,4 @@
-package com.emmanuel.pastor.simplesmartapps.algorithm
+package algorithm
 
 interface GameRules<S, A> {
     fun nextPlayer(state: S): Player

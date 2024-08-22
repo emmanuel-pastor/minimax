@@ -1,4 +1,4 @@
-package com.emmanuel.pastor.simplesmartapps.algorithm
+package algorithm
 
 sealed class Player {
     data object Max : Player()

@@ -1,8 +1,8 @@
-package com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe
+package games.tic_tac_toe
 
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameRules
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+import algorithm.GameResult
+import algorithm.GameRules
+import algorithm.Player
 
 typealias T3State = Array<Array<Player?>>
 typealias T3Action = Pair<Int, Int>

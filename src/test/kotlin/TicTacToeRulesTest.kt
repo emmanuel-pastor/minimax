@@ -1,8 +1,8 @@
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
-import com.emmanuel.pastor.simplesmartapps.algorithm.minimax
-import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.T3State
-import com.emmanuel.pastor.simplesmartapps.games.tic_tac_toe.TicTacToeRules
+import algorithm.GameResult
+import algorithm.Player
+import algorithm.minimax
+import games.tic_tac_toe.T3State
+import games.tic_tac_toe.TicTacToeRules
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

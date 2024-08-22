@@ -1,4 +1,4 @@
-package com.emmanuel.pastor.simplesmartapps.algorithm
+package algorithm
 
 import kotlin.math.max
 import kotlin.math.min

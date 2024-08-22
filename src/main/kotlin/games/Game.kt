@@ -1,8 +1,8 @@
-package com.emmanuel.pastor.simplesmartapps.games
+package games
 
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameRules
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
-import com.emmanuel.pastor.simplesmartapps.algorithm.minimax
+import algorithm.GameRules
+import algorithm.Player
+import algorithm.minimax
 import kotlin.random.Random
 
 /**

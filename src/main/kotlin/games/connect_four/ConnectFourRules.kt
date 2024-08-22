@@ -1,8 +1,8 @@
-package com.emmanuel.pastor.simplesmartapps.games.connect_four
+package games.connect_four
 
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameResult
-import com.emmanuel.pastor.simplesmartapps.algorithm.GameRules
-import com.emmanuel.pastor.simplesmartapps.algorithm.Player
+import algorithm.GameResult
+import algorithm.GameRules
+import algorithm.Player
 
 typealias C4State = Array<Array<Player?>>
 typealias C4Action = Int
