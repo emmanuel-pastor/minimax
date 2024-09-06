@@ -1,5 +1,6 @@
 package frontends.cli.tic_tac_toe
 
+import algorithm.Player
 import frontends.cli.CliFrontend
 import games.Game
 import games.tic_tac_toe.T3Action
@@ -30,14 +31,21 @@ class TicTacToeCli : CliFrontend<T3State, T3Action>(Game(
     }
 
     override fun printState(state: T3State) {
-        println("   0  1  2")
+        println("   0   1   2")
         state.forEachIndexed { index, line ->
-            println("${'a'.plus(index)} ${line.map { it?.let { playerToChar(it) } ?: " " }}")
+            println("${'a'.plus(index)} ${line.map { it?.let { playerToChar(it) } ?: "  " }}")
         }
         println()
     }
 
     override fun printInstruction() {
         println("Coordinates of your next action [row,column]: ")
+    }
+
+    override fun playerToChar(player: Player): String {
+        return when (player) {
+            Player.Min -> "⭕"
+            Player.Max -> "❌"
+        }
     }
 }

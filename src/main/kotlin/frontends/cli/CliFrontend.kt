@@ -11,7 +11,7 @@ abstract class CliFrontend<S, A>(private val game: Game<S, A>) {
     abstract fun printState(state: S)
     abstract fun printInstruction()
 
-    fun playerToChar(player: Player): String {
+    open fun playerToChar(player: Player): String {
         return when (player) {
             Player.Min -> "O"
             Player.Max -> "X"

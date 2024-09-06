@@ -1,5 +1,6 @@
 package frontends.cli.connect_four
 
+import algorithm.Player
 import frontends.cli.CliFrontend
 import games.Game
 import games.connect_four.C4Action
@@ -26,10 +27,17 @@ class ConnectFourCli : CliFrontend<C4State, C4Action>(
     }
 
     override fun printState(state: C4State) {
-        println("   0  1  2  3  4  5  6")
-        state.forEachIndexed { index, line ->
-            println("${'a'.plus(index)} ${line.map { it?.let { playerToChar(it) } ?: " " }}")
+        println("  0   1   2   3   4   5   6")
+        state.forEachIndexed { _, line ->
+            println("${line.map { it?.let { playerToChar(it) } ?: "  " }}")
         }
         println()
+    }
+
+    override fun playerToChar(player: Player): String {
+        return when (player) {
+            Player.Min -> "\uD83D\uDFE1"
+            Player.Max -> "\uD83D\uDD34"
+        }
     }
 }
