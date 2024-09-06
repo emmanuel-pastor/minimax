@@ -11,10 +11,10 @@ abstract class CliFrontend<S, A>(private val game: Game<S, A>) {
     abstract fun printState(state: S)
     abstract fun printInstruction()
 
-    fun playerToChar(player: Player): Char {
+    fun playerToChar(player: Player): String {
         return when (player) {
-            Player.Min -> 'O'
-            Player.Max -> 'X'
+            Player.Min -> "O"
+            Player.Max -> "X"
         }
     }
 
@@ -49,8 +49,8 @@ abstract class CliFrontend<S, A>(private val game: Game<S, A>) {
     private fun printWinner(result: GameResult) {
         when (result) {
             GameResult.Draw -> println("The game ended in a DRAW")
-            GameResult.Max -> println("X player won")
-            GameResult.Min -> println("O player won")
+            GameResult.Max -> println("${playerToChar(Player.Max)} player won")
+            GameResult.Min -> println("${playerToChar(Player.Min)} player won")
         }
     }
 }
