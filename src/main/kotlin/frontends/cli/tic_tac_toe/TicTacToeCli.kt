@@ -7,7 +7,7 @@ import games.tic_tac_toe.T3Action
 import games.tic_tac_toe.T3State
 import games.tic_tac_toe.TicTacToeRules
 
-class TicTacToeCli : CliFrontend<T3State, T3Action>(Game(
+object TicTacToeCli : CliFrontend<T3State, T3Action>(Game(
     state = Array(3) { Array(3) { null } },
     depth = Int.MAX_VALUE,
     rules = TicTacToeRules()
