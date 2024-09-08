@@ -18,16 +18,16 @@ fun main() {
 
         when (choice) {
             menuOptions[0] -> {
-                TicTacToeCli.run()
+                TicTacToeCli().run()
             }
 
             menuOptions[1] -> {
-                ConnectFourCli.run()
+                ConnectFourCli().run()
             }
 
             menuOptions[2] -> {
                 quit = true
-                println("👋 Bye!")
+                terminal.println("👋 Bye!")
             }
         }
         println("-------------------")

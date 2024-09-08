@@ -7,7 +7,7 @@ import games.connect_four.C4Action
 import games.connect_four.C4State
 import games.connect_four.ConnectFourRules
 
-object ConnectFourCli : CliFrontend<C4State, C4Action>(
+class ConnectFourCli : CliFrontend<C4State, C4Action>(
     Game(
         state = Array(6) { Array(7) { null } },
         depth = 1,
